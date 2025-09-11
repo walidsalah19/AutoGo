@@ -19,7 +19,6 @@ namespace AutoGo.Domain.Models
         public int Capacity { get; set; }                 // الطاقة الاستيعابية (عدد العربيات اللي ممكن الورشة تستقبلها في نفس الوقت)
         public string Specialization { get; set; }   // كهرباء، ميكانيكا، فحص شامل
 
-        // Owner (WorkshopOwner)
         public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
 

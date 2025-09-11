@@ -15,9 +15,11 @@ namespace AutoGo.Domain.Models
         public string UserId { get; set; }   // صاحب السيارة
         public ApplicationUser User { get; set; }
 
-        public string VehicleId { get; set; }
+        public Guid VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
-        public string ReservationNumber { get; set; } = Guid.NewGuid().ToString().Substring(0, 8);
+
+
+        public string ReservationNumber { get; set; } 
 
         public DateTime ReservationDate { get; set; }     // وقت إنشاء الحجز
         public DateTime AppointmentDate { get; set; }     // ميعاد الصيانة / الكشف

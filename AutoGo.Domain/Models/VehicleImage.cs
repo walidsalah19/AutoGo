@@ -10,7 +10,7 @@ namespace AutoGo.Domain.Models
     {
         public string Url { get; set; }
 
-        public string VehicleId { get; set; }
+        public Guid VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
     }
 }

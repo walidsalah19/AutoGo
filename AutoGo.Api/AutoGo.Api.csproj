@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoGo.Application\AutoGo.Application.csproj" />
+    <ProjectReference Include="..\AutoGo.Infrastructure\AutoGo.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
