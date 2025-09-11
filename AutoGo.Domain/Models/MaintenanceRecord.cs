@@ -8,7 +8,7 @@ namespace AutoGo.Domain.Models
 {
     public class MaintenanceRecord:BaseEntity
     {
-        public string VehicleId { get; set; }
+        public Guid VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
 
         public DateTime MaintenanceDate { get; set; } = DateTime.UtcNow;

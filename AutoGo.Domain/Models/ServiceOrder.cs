@@ -8,7 +8,7 @@ namespace AutoGo.Domain.Models
 {
     public class ServiceOrder:BaseEntity
     {
-        public string ReservationId { get; set; }
+        public Guid ReservationId { get; set; }
         public Reservation Reservation { get; set; }
 
         public DateTime ServiceStartDate { get; set; }

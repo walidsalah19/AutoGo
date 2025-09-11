@@ -11,6 +11,8 @@ namespace AutoGo.Domain.Models
     {
         public string FullName { get; set; }
         public string Address { get; set; }
-
+        // Navigation
+        public ICollection<Rental> Rentals { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

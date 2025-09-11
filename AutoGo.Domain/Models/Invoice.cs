@@ -10,17 +10,18 @@ namespace AutoGo.Domain.Models
 {
     public class Invoice : BaseEntity
     {
-        public string InvoiceNumber { get; set; } = Guid.NewGuid().ToString().Substring(0, 8);
+        public int InvoiceNumber { get; set; }
 
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-        public string? RentalId { get; set; }
+        public Guid? RentalId { get; set; }
         public Rental Rental { get; set; }
 
-        public string? ServiceOrderId { get; set; }
+        public Guid? ServiceOrderId { get; set; }
         public ServiceOrder ServiceOrder { get; set; }
-
+        public Guid? paymentId { get; set; }
+        public Payment Payment { get; set; }
         public DateTime IssueDate { get; set; } = DateTime.UtcNow;
         public DateTime DueDate { get; set; }
 
@@ -29,5 +30,8 @@ namespace AutoGo.Domain.Models
         public decimal RemainingAmount => TotalAmount - PaidAmount;
 
         public string Status { get; set; }   // Paid, PartiallyPaid, Unpaid, Cancelled
+
+
+
     }
 }
