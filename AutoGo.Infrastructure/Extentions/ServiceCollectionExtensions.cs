@@ -33,20 +33,20 @@ namespace AutoGo.Infrastructure.Extentions
             services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
 
 
-            //services.AddStackExchangeRedisCache(options =>
-            //{
-            //    options.Configuration = config.GetConnectionString("Redis");
-            //});
-            //services.AddHangfire((sp, config) =>
-            //{
-            //    var connection = sp.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
-            //    config.UseSqlServerStorage(connection);
-            //});
-            // services.AddHangfireServer();
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = config.GetConnectionString("Redis");
+            });
+            services.AddHangfire((sp, config) =>
+            {
+                var connection = sp.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
+                config.UseSqlServerStorage(connection);
+            });
+            services.AddHangfireServer();
 
 
 
-            
+
             // services.AddScoped<IUsersServices<UsersModel>, UsersServices<UsersModel>();
 
             return services;

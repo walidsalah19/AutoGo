@@ -1,11 +1,17 @@
 
+using AutoGo.Api.Extentions;
+using AutoGo.Api.Middelwares;
 using AutoGo.Infrastructure.Extentions;
+using AutoGo.Infrastructure.Seeding;
+using Hangfire;
+using Microsoft.AspNetCore.Identity;
+using Serilog;
 
 namespace AutoGo.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +22,11 @@ namespace AutoGo.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddApiServices();
+            builder.Services.AddSwaggerServices();
+            builder.Services.AddAuthServices(builder.Configuration);
+            builder.Host.UseSerilog();
+
 
             var app = builder.Build();
 
@@ -26,9 +37,26 @@ namespace AutoGo.Api
                 app.UseSwaggerUI();
             }
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                await RoleSeeder.SeedRolesAsync(roleManager);
+            }
             app.UseHttpsRedirection();
+            app.UseCors("default");
+
+
+            app.UseMiniProfiler();
+
+
+            app.UseMiddleware<LoggingMiddleware>();
+            app.ExceptionHandling();
+
 
             app.UseAuthorization();
+
+
+            app.UseHangfireDashboard("/admin-jobs");
 
 
             app.MapControllers();
