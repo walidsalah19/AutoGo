@@ -13,8 +13,6 @@ namespace AutoGo.Domain.Models
 
         public string ShowroomName { get; set; }         // اسم المعرض
         public string Location { get; set; }             // العنوان
-        public string PhoneNumber { get; set; }          // رقم للتواصل
-        public string Email { get; set; }                // إيميل المعرض
         public string WebsiteUrl { get; set; }           // موقع إلكتروني
         public string Description { get; set; }          // وصف قصير عن المعرض
         public string TaxNumber { get; set; }

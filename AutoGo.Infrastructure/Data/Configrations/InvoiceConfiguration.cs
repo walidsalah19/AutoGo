@@ -45,10 +45,7 @@ namespace AutoGo.Infrastructure.Data.Configrations
                 .HasMaxLength(50);
 
             // Relationships
-            builder.HasOne(i => i.User)
-                .WithMany()
-                .HasForeignKey(i => i.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+           
 
             builder.HasOne(i => i.Rental)
                 .WithMany()

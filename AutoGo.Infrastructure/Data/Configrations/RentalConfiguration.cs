@@ -23,7 +23,7 @@ namespace AutoGo.Infrastructure.Data.Configrations
             builder.Property(r => r.VehicleId)
                 .IsRequired();
 
-            builder.Property(r => r.UserId)
+            builder.Property(r => r.customerId)
                 .IsRequired();
 
             builder.Property(r => r.DealerId)
@@ -79,10 +79,6 @@ namespace AutoGo.Infrastructure.Data.Configrations
                 .HasForeignKey(r => r.VehicleId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(r => r.User)
-                .WithMany() // or .WithMany(u => u.Rentals) if you add navigation in ApplicationUser
-                .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(r => r.Dealer)
                 .WithMany()

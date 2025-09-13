@@ -32,7 +32,7 @@ namespace AutoGo.Infrastructure.Services.Auth
             var result = await signInManager.CheckPasswordSignInAsync(user, currentPassword, false);
 
             if (!result.Succeeded)
-                return Result<AuthResponse>.Failure(new Error(message: "Invalid credentials", code: ErrorCodes.Unauthorized.ToString()));
+                return Result<AuthResponse>.Failure(new Error(message: "the current password is wronge", code: ErrorCodes.Unauthorized.ToString()));
 
             var res = await userManager.ChangePasswordAsync(user,currentPassword,newPassword);
 
@@ -58,7 +58,7 @@ namespace AutoGo.Infrastructure.Services.Auth
 
             var result = await signInManager.CheckPasswordSignInAsync(user, password, false);
             if (!result.Succeeded)
-                return Result<AuthResponse>.Failure(new Error(message: "Invalid credentials", code: ErrorCodes.NotFound.ToString()));
+                return Result<AuthResponse>.Failure(new Error(message: "Wronge Password", code: ErrorCodes.Unauthorized.ToString()));
 
             return await GenerateAuthResponse(user);
         }
@@ -72,17 +72,29 @@ namespace AutoGo.Infrastructure.Services.Auth
 
         public async Task<Result<AuthResponse>> RefreshTokenAsync(string refreshToken)
         {
-            var token = await appContext.RefreshTokens.Include(x => x.user).FirstOrDefaultAsync(x => x.Token == refreshToken);
-            if (token == null || token.ExpireOnUtc < DateTime.UtcNow)
-            {
-                return Result<AuthResponse>.Failure(new Error(message: "the refresh token has expire", code: ErrorCodes.Forbidden.ToString()));
-            }
+            var token = await appContext.RefreshTokens
+                             .Include(x => x.user)
+                             .FirstOrDefaultAsync(x => x.Token == refreshToken);
+
+            if (token == null)
+                return Result<AuthResponse>.Failure(new Error("Refresh token not found", ErrorCodes.NotFound.ToString()));
+
+            if (token.ExpireOnUtc < DateTime.UtcNow)
+                return Result<AuthResponse>.Failure(new Error("Refresh token expired", ErrorCodes.Forbidden.ToString()));
+
+            if (token.user == null /* || !token.user.IsActive */)
+                return Result<AuthResponse>.Failure(new Error("User is inactive", ErrorCodes.Forbidden.ToString()));
+
             var roles = await GetUserRoles(token.user);
-            var accesToken = tokenService.GenerateTokens(token.user, roles);
+            var accessToken = tokenService.GenerateTokens(token.user, roles);
+
+            // Token Rotation
             token.Token = tokenService.GenerateRefreshToken();
             token.ExpireOnUtc = DateTime.UtcNow.AddDays(7);
-            accesToken.RefreshToken = token.Token;
-            return Result<AuthResponse>.Success(accesToken);
+            await appContext.SaveChangesAsync();
+
+            accessToken.RefreshToken = token.Token;
+            return Result<AuthResponse>.Success(accessToken);
 
         }
         private async Task<string> SaveRefreshToken(string userId)
@@ -103,7 +115,7 @@ namespace AutoGo.Infrastructure.Services.Auth
         private async Task<List<string>> GetUserRoles(ApplicationUser user)
         {
             var roles = await userManager.GetRolesAsync(user);
-            return (List<string>)roles;
+            return roles.ToList();
         }
         private async Task ExpireTokens(string userId)
         {
