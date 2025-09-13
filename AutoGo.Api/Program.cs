@@ -48,20 +48,23 @@ namespace AutoGo.Api
             app.UseCors("default");
 
 
-            app.UseMiniProfiler();
 
 
             app.UseMiddleware<LoggingMiddleware>();
             app.ExceptionHandling();
 
-
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
 
             app.UseHangfireDashboard("/admin-jobs");
 
 
             app.MapControllers();
+
+            app.UseMiniProfiler();
+
 
             app.Run();
         }

@@ -12,8 +12,8 @@ namespace AutoGo.Domain.Models
     {
         public int InvoiceNumber { get; set; }
 
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public string customerId { get; set; }//customer
+        public Customer customer { get; set; }
 
         public Guid? RentalId { get; set; }
         public Rental Rental { get; set; }

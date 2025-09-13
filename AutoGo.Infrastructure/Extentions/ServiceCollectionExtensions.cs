@@ -15,6 +15,14 @@ using FluentValidation;
 using AutoGo.Infrastructure.Data.Context;
 using AutoGo.Domain.Models;
 using AutoGo.Application.Common.Context;
+using AutoGo.Application.Abstractions.AuthServices;
+using AutoGo.Infrastructure.Services.Auth;
+using AutoGo.Application.Abstractions.IdentityServices;
+using AutoGo.Infrastructure.Services.Identity;
+using AutoGo.Domain.Interfaces.Repo;
+using AutoGo.Infrastructure.Reposatories;
+using AutoGo.Domain.Interfaces.UnitofWork;
+using AutoGo.Infrastructure.UnitofWork;
 
 namespace AutoGo.Infrastructure.Extentions
 {
@@ -47,7 +55,16 @@ namespace AutoGo.Infrastructure.Extentions
 
 
 
-            // services.AddScoped<IUsersServices<UsersModel>, UsersServices<UsersModel>();
+            //Authintication
+             services.AddScoped<ITokenService,TokenServices>();
+             services.AddScoped<IAuthServices, AuthServices>();
+             services.AddScoped<IUsersServices, UserServices>();
+
+
+            //ginaric repo
+            services.AddScoped(typeof(IBaseReposatory<>),typeof(BaseReposatory<>));
+            //unit of work
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

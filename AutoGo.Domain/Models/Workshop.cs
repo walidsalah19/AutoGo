@@ -8,10 +8,6 @@ namespace AutoGo.Domain.Models
 {
    public class Workshop : BaseEntity
     {
-        public string Name { get; set; }                  // اسم الورشة
-        public string Address { get; set; }               // عنوان الورشة
-        public string PhoneNumber { get; set; }           // رقم التواصل
-        public string Email { get; set; }                 // إيميل الورشة
         public string WebsiteUrl { get; set; }            // موقع إلكتروني (اختياري)
 
         public string Description { get; set; }           // وصف قصير عن الورشة

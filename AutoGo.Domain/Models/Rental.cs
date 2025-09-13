@@ -12,8 +12,8 @@ namespace AutoGo.Domain.Models
         public Guid VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
 
-        public string UserId { get; set; }   // Customer
-        public ApplicationUser User { get; set; }
+        public string customerId { get; set; }   // Customer
+        public Customer Customer { get; set; }
 
         public string DealerId  { get; set; }   // car owner
         public Dealer Dealer { get; set; }

@@ -30,11 +30,7 @@ namespace AutoGo.Infrastructure.Data.Configrations
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(d => d.PhoneNumber)
-                .HasMaxLength(20);
-
-            builder.Property(d => d.Email)
-                .HasMaxLength(100);
+          
 
             builder.Property(d => d.WebsiteUrl)
                 .HasMaxLength(200);
