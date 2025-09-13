@@ -1,6 +1,7 @@
 
 using AutoGo.Api.Extentions;
 using AutoGo.Api.Middelwares;
+using AutoGo.Application.Extentions;
 using AutoGo.Infrastructure.Extentions;
 using AutoGo.Infrastructure.Seeding;
 using Hangfire;
@@ -21,10 +22,11 @@ namespace AutoGo.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApiServices();
             builder.Services.AddSwaggerServices();
             builder.Services.AddAuthServices(builder.Configuration);
+            builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddApplicationServices();
             builder.Host.UseSerilog();
 
 
