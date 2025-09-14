@@ -1,5 +1,5 @@
 ﻿using AutoGo.Api.Extentions;
-using AutoGo.Application.Users.Customers.Command;
+using AutoGo.Application.Users.Customers.Command.CreateCustomer;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
