@@ -26,6 +26,8 @@ namespace AutoGo.Infrastructure.Data.Context
         public DbSet<VehicleImage> VehicleImages { get; set; }
         public DbSet<Workshop> Workshops { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+
 
         public AppDbContext(DbContextOptions options) : base(options)
         {

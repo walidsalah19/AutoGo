@@ -1,5 +1,7 @@
 ﻿using AutoGo.Api.Extentions;
+using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Users.Customers.Command.CreateCustomer;
+using AutoGo.Application.Users.Customers.Queries.AllCustomers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +26,12 @@ namespace AutoGo.Api.Controllers
         public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerCommand customer)
         {
             var res = await mediator.Send(customer);
+            return this.HandleResult(res);
+        }
+        [HttpGet]
+        public async Task<IActionResult> AllCutomers([FromQuery]PageParameters pageParameters)
+        {
+            var res = await mediator.Send(new AllCustomersQuery { PageParameters=pageParameters});
             return this.HandleResult(res);
         }
     }
