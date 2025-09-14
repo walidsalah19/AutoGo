@@ -1,4 +1,4 @@
-﻿using AutoGo.Application.Users.Customers.Command;
+﻿using AutoGo.Application.Users.Customers.Command.CreateCustomer;
 using AutoGo.Domain.Models;
 using AutoMapper;
 using System;

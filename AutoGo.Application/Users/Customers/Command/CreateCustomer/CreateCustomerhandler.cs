@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoGo.Application.Users.Customers.Command
+namespace AutoGo.Application.Users.Customers.Command.CreateCustomer
 {
     public class CreateCustomerhandler : IRequestHandler<CreateCustomerCommand, Result<string>>
     {
