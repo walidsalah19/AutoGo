@@ -22,9 +22,4 @@
     <ProjectReference Include="..\AutoGo.Domain\AutoGo.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Users\Customers\Dtos\" />
-    <Folder Include="Users\Customers\Queries\" />
-  </ItemGroup>
-
 </Project>

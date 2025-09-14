@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoGo.Application.Common.AppResult
+namespace AutoGo.Application.Common.Pagination
 {
     public class PaginationResult<T>
     {
-        public PaginationResult(IEnumerable<T> items, int totalCount, int pageSize, int pageNumber)
+        public PaginationResult(IEnumerable<T> items, int totalCount, int pageNumber, int pageSize )
         {
             Items = items;
             TotalItemsCount = totalCount;
