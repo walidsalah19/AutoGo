@@ -15,6 +15,9 @@ namespace AutoGo.Infrastructure.Data.Configrations
         {
             builder.Property(u => u.FullName).IsRequired().HasMaxLength(100);
             builder.Property(u => u.Address).HasMaxLength(250);
+            builder.Property(c => c.IsActive)
+                  .HasDefaultValue(true);
+
         }
     }
 }

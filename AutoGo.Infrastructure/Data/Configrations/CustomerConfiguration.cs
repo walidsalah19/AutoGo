@@ -31,9 +31,7 @@ namespace AutoGo.Infrastructure.Data.Configrations
             builder.Property(c => c.DateOfBirth)
                    .HasColumnType("date"); // نحفظها كتاريخ فقط بدون وقت
 
-            builder.Property(c => c.IsActive)
-                   .HasDefaultValue(true);
-
+           
           
             // ✅ Relationship with ApplicationUser (One-to-One)
             builder.HasOne(c => c.user)

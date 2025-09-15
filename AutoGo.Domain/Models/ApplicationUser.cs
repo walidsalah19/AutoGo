@@ -11,6 +11,9 @@ namespace AutoGo.Domain.Models
     {
         public string FullName { get; set; }
         public string Address { get; set; }
+
+        public bool IsActive { get; set; } = true;
+
         // Navigation
         public ICollection<Invoice> Invoices { get; set; }
     }

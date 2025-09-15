@@ -62,6 +62,8 @@ namespace AutoGo.Infrastructure.Services.Auth
 
             if (user == null)
                 return Result<AuthResponse>.Failure(new Error(message: "Invalid credentials", code: ErrorCodes.NotFound.ToString()));
+            else if (!user.IsActive)
+                return Result<AuthResponse>.Failure(new Error(message: "Your account is not active ", code: ErrorCodes.NotFound.ToString()));
 
             var result = await signInManager.CheckPasswordSignInAsync(user, password, false);
             if (!result.Succeeded)
@@ -85,6 +87,9 @@ namespace AutoGo.Infrastructure.Services.Auth
 
             if (token == null)
                 return Result<AuthResponse>.Failure(new Error("Refresh token not found", ErrorCodes.NotFound.ToString()));
+
+            else if (!token.user.IsActive)
+                return Result<AuthResponse>.Failure(new Error(message: "Your account is not active ", code: ErrorCodes.NotFound.ToString()));
 
             if (token.ExpireOnUtc < DateTime.UtcNow)
                 return Result<AuthResponse>.Failure(new Error("Refresh token expired", ErrorCodes.Forbidden.ToString()));
