@@ -1,6 +1,6 @@
 ﻿using AutoGo.Application.Common.Context;
 using AutoGo.Domain.Models;
-using ClinicalManagement.Domain.Models;
+using AutoGo.Domain.Models;
 using ClinicalManagement.Infrastructure.Data.Configrations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

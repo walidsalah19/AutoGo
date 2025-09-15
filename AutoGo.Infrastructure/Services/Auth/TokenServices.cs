@@ -1,5 +1,5 @@
 ﻿using AutoGo.Application.Abstractions.AuthServices;
-using AutoGo.Application.Auth.Dtos;
+using AutoGo.Application.Authintication.Dtos;
 using AutoGo.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -31,19 +31,21 @@ namespace AutoGo.Infrastructure.Services.Auth
             userClaims.Add(new Claim(ClaimTypes.Email, user.Email));
             userClaims.Add(new Claim(ClaimTypes.Name, user.UserName));
 
-
-            var symmetric = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SecritKey"]));
-
-            SigningCredentials signing = new SigningCredentials(symmetric, SecurityAlgorithms.HmacSha256);
             foreach (var item in roles)
             {
                 userClaims.Add(new Claim(ClaimTypes.Role, item));
             }
+            var j = configuration["JWT:SecritKey"];
+            Console.WriteLine(j);
+            var symmetric = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SecretKey"]));
+
+            SigningCredentials signing = new SigningCredentials(symmetric, SecurityAlgorithms.HmacSha256);
+            
 
             JwtSecurityToken jwtSecurity = new JwtSecurityToken(
                     audience: configuration["JWT:AudienceIP"],
                     issuer: configuration["JWT:IssuerIP"],
-                    expires: DateTime.Now.AddDays(7),
+                    expires: DateTime.Now.AddHours(5),
                     claims: userClaims,
                     signingCredentials: signing
                 );
@@ -54,9 +56,11 @@ namespace AutoGo.Infrastructure.Services.Auth
             {
                 RefreshToken = "",
                 AccessToken = accessToken,
-                ExpiresAt = DateTime.Now.AddDays(1),
-                ExpiresIn=7,
-                userName=user.UserName
+                ExpiresAt = DateTime.Now.AddHours(5),
+                ExpiresIn=5,
+                userName=user.UserName,
+                userId=user.Id
+                
             };
         }
         public string GenerateRefreshToken()

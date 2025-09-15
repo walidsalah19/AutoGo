@@ -8,20 +8,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoGo.Application.Authintication.Login
+namespace AutoGo.Application.Authintication.RefreshToken
 {
-    public class LoginHandler : IRequestHandler<LoginComand, Result<AuthResponse>>
+    public class RefreshTokenHandler : IRequestHandler<RefrashTokenCommad, Result<AuthResponse>>
     {
         private readonly IAuthServices authServices;
 
-        public LoginHandler(IAuthServices authServices)
+        public RefreshTokenHandler(IAuthServices authServices)
         {
             this.authServices = authServices;
         }
 
-        public async Task<Result<AuthResponse>> Handle(LoginComand request, CancellationToken cancellationToken)
+        public async Task<Result<AuthResponse>> Handle(RefrashTokenCommad request, CancellationToken cancellationToken)
         {
-            var res = await authServices.LoginAsync(request.UsernameOrEmail, request.Password);
+            var res = await authServices.RefreshTokenAsync(request.RefrashToken, request.UserId);
             return res;
         }
     }

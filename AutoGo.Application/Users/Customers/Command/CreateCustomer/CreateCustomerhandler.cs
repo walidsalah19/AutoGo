@@ -3,13 +3,14 @@ using AutoGo.Domain.Enums;
 using AutoGo.Domain.Interfaces.UnitofWork;
 using AutoGo.Domain.Models;
 using AutoMapper;
-using ClinicalManagement.Application.Common.Result;
+using AutoGo.Application.Common.Result;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoGo.Application.Common.Result;
 
 namespace AutoGo.Application.Users.Customers.Command.CreateCustomer
 {

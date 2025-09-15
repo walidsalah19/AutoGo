@@ -1,5 +1,5 @@
 ﻿using AutoGo.Domain.Models;
-using ClinicalManagement.Domain.Models;
+using AutoGo.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

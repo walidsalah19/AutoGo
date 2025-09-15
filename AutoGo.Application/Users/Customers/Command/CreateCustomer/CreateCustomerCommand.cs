@@ -1,4 +1,4 @@
-﻿using ClinicalManagement.Application.Common.Result;
+﻿using AutoGo.Application.Common.Result;
 using MediatR;
 using System;
 using System.Collections.Generic;

@@ -5,8 +5,11 @@ using AutoGo.Application.Extentions;
 using AutoGo.Infrastructure.Extentions;
 using AutoGo.Infrastructure.Seeding;
 using Hangfire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 
 namespace AutoGo.Api
 {
@@ -21,15 +24,15 @@ namespace AutoGo.Api
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddApiServices();
-            builder.Services.AddSwaggerServices();
-            builder.Services.AddAuthServices(builder.Configuration);
             builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddSwaggerServices();
+            builder.Services.AddApiServices();
+            builder.Services.AddAuthServices(builder.Configuration);
+
             builder.Services.AddApplicationServices();
             builder.Host.UseSerilog();
 
-
+        
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -47,23 +50,21 @@ namespace AutoGo.Api
             app.UseHttpsRedirection();
             app.UseCors("default");
 
+           // app.UseRouting();
 
-
+            app.ExceptionHandling();
 
             app.UseMiddleware<LoggingMiddleware>();
-            app.ExceptionHandling();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-
-
             app.UseHangfireDashboard("/admin-jobs");
 
+            app.UseMiniProfiler();
 
             app.MapControllers();
 
-            app.UseMiniProfiler();
 
 
             app.Run();

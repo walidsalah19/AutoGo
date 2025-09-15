@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClinicalManagement.Application.Common.Result
+namespace AutoGo.Application.Common.Result
 {
     public class Result<T> 
     {

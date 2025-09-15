@@ -15,7 +15,7 @@ namespace AutoGo.Api.Extentions
                 {
                     Version = "v1",
                     Title = "ASP.NET8 Web API",
-                    Description = "Clinical Managment "
+                    Description = "Auto Go"
                 });
                 //�To�Enable�authorization�using�Swagger�(JWT)����
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()

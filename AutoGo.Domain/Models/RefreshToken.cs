@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClinicalManagement.Domain.Models
+namespace AutoGo.Domain.Models
 {
    public class RefreshToken
     {

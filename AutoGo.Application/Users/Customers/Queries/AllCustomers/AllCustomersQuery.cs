@@ -1,6 +1,6 @@
 ﻿using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Users.Customers.Dtos;
-using ClinicalManagement.Application.Common.Result;
+using AutoGo.Application.Common.Result;
 using MediatR;
 using System;
 using System.Collections.Generic;
