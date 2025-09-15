@@ -1,4 +1,4 @@
-﻿using ClinicalManagement.Domain.Models;
+﻿using AutoGo.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

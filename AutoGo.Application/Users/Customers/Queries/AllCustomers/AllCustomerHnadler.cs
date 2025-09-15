@@ -3,7 +3,7 @@ using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Users.Customers.Dtos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using ClinicalManagement.Application.Common.Result;
+using AutoGo.Application.Common.Result;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

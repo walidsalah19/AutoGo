@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace AutoGo.Api.Extentions
 {
@@ -8,7 +9,7 @@ namespace AutoGo.Api.Extentions
         public static IServiceCollection AddAuthServices(this IServiceCollection services,IConfiguration configuration)
         {
 
-
+           
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -21,16 +22,18 @@ namespace AutoGo.Api.Extentions
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = configuration["JWT:IssuerIP"],
                     ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["JWT:IssuerIP"],
                     ValidAudience = configuration["JWT:AudienceIP"],
                     IssuerSigningKey =
                         new SymmetricSecurityKey(
-                            System.Text.Encoding.UTF8.GetBytes(configuration["JWT:SecritKey"]))
+                            Encoding.UTF8.GetBytes(configuration["JWT:SecretKey"]))
 
                 };
             });
-
+          //  services.AddAuthorization();
             return services;
         }
     }

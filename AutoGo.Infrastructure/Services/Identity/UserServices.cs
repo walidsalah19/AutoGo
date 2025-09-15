@@ -2,7 +2,7 @@
 using AutoGo.Domain.Enums;
 using AutoGo.Domain.Models;
 using AutoGo.Infrastructure.Data.Context;
-using ClinicalManagement.Application.Common.Result;
+using AutoGo.Application.Common.Result;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

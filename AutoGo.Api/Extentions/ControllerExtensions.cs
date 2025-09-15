@@ -1,4 +1,4 @@
-﻿using ClinicalManagement.Application.Common.Result;
+﻿using AutoGo.Application.Common.Result;
 using AutoGo.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 

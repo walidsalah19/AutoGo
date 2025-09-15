@@ -1,10 +1,10 @@
 ﻿using AutoGo.Application.Abstractions.AuthServices;
-using AutoGo.Application.Auth.Dtos;
+using AutoGo.Application.Authintication.Dtos;
 using AutoGo.Domain.Enums;
 using AutoGo.Domain.Models;
 using AutoGo.Infrastructure.Data.Context;
-using ClinicalManagement.Application.Common.Result;
-using ClinicalManagement.Domain.Models;
+using AutoGo.Application.Common.Result;
+using AutoGo.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,6 +23,13 @@ namespace AutoGo.Infrastructure.Services.Auth
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly AppDbContext appContext;
 
+        public AuthServices(UserManager<ApplicationUser> userManager, ITokenService tokenService, SignInManager<ApplicationUser> signInManager, AppDbContext appContext)
+        {
+            this.userManager = userManager;
+            this.tokenService = tokenService;
+            this.signInManager = signInManager;
+            this.appContext = appContext;
+        }
 
         public async Task<Result<AuthResponse>> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
         {
@@ -70,11 +77,11 @@ namespace AutoGo.Infrastructure.Services.Auth
             return Result<string>.Success("Logout Successfully");
         }
 
-        public async Task<Result<AuthResponse>> RefreshTokenAsync(string refreshToken)
+        public async Task<Result<AuthResponse>> RefreshTokenAsync(string refreshToken,string userId)
         {
             var token = await appContext.RefreshTokens
                              .Include(x => x.user)
-                             .FirstOrDefaultAsync(x => x.Token == refreshToken);
+                             .FirstOrDefaultAsync(x => x.Token == refreshToken&&x.UserId.Equals(userId));
 
             if (token == null)
                 return Result<AuthResponse>.Failure(new Error("Refresh token not found", ErrorCodes.NotFound.ToString()));
@@ -119,7 +126,7 @@ namespace AutoGo.Infrastructure.Services.Auth
         }
         private async Task ExpireTokens(string userId)
         {
-            await appContext.RefreshTokens.Where(x => x.UserId == userId)
+            await appContext.RefreshTokens.Where(x=> x.UserId.Equals(userId))
                 .ExecuteDeleteAsync();
         }
         private async Task<Result<AuthResponse>> GenerateAuthResponse(ApplicationUser user)

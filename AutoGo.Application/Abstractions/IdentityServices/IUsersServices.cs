@@ -1,5 +1,5 @@
 ﻿using AutoGo.Domain.Models;
-using ClinicalManagement.Application.Common.Result;
+using AutoGo.Application.Common.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;

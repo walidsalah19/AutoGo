@@ -1,4 +1,4 @@
-﻿using AutoGo.Application.Auth.Dtos;
+﻿using AutoGo.Application.Authintication.Dtos;
 using AutoGo.Domain.Models;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
-﻿using ClinicalManagement.Application.Common.Result;
+﻿using AutoGo.Application.Common.Result;
+using AutoGo.Application.Common.Result;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 using System.Text.Json;

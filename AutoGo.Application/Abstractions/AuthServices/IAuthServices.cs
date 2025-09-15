@@ -1,5 +1,5 @@
-﻿using AutoGo.Application.Auth.Dtos;
-using ClinicalManagement.Application.Common.Result;
+﻿using AutoGo.Application.Authintication.Dtos;
+using AutoGo.Application.Common.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,6 @@ namespace AutoGo.Application.Abstractions.AuthServices
         Task<Result<AuthResponse>> LoginAsync(string usernameOrEmail, string password);
         Task<Result<string>> LogoutAsync(string userId);
         Task<Result<AuthResponse>> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
-        Task<Result<AuthResponse>> RefreshTokenAsync(string refreshToken);
+        Task<Result<AuthResponse>> RefreshTokenAsync(string refreshToken, string userId);
     }
 }

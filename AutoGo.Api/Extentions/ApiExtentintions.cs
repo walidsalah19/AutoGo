@@ -40,7 +40,7 @@ namespace AutoGo.Api.Extentions
 
 
             // segnalr
-            services.AddSignalR();
+            //services.AddSignalR();
             return services;
         }
 
