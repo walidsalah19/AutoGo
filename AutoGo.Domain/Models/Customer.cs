@@ -13,7 +13,6 @@ namespace AutoGo.Domain.Models
         public string? Country { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
-        public bool IsActive { get; set; } = true;
         public string userId { get; set; }
         public ApplicationUser user { get; set; }
 

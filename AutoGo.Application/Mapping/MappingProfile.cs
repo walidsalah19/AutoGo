@@ -19,13 +19,13 @@ namespace AutoGo.Application.Mapping
                 .ForMember(des => des.Email, src => src.MapFrom(sr => sr.Email))
                 .ForMember(des => des.PhoneNumber, src => src.MapFrom(sr => sr.PhoneNumber))
                 .ForMember(des => des.Address, src => src.MapFrom(sr => sr.Address))
-                .ForMember(des => des.Id, src => src.MapFrom(sr => Guid.NewGuid()));
+                .ForMember(des => des.Id, src => src.MapFrom(sr => Guid.NewGuid()))
+                .ForMember(des => des.IsActive, src => src.MapFrom(sr => true));
 
             CreateMap<CreateCustomerCommand, Customer>()
                 .ForMember(des => des.DateOfBirth, src => src.MapFrom(sr => sr.DateOfBirth))
                 .ForMember(des => des.City, src => src.MapFrom(sr => sr.City))
-                .ForMember(des => des.Country, src => src.MapFrom(sr => sr.Country))
-                .ForMember(des => des.IsActive, src => src.MapFrom(sr =>true));
+                .ForMember(des => des.Country, src => src.MapFrom(sr => sr.Country));
 
 
             CreateMap<Customer, CustomerDto>()
@@ -36,7 +36,7 @@ namespace AutoGo.Application.Mapping
                .ForMember(des => des.DateOfBirth, src => src.MapFrom(sr => sr.DateOfBirth))
                .ForMember(des => des.City, src => src.MapFrom(sr => sr.City))
                .ForMember(des => des.Country, src => src.MapFrom(sr => sr.Country))
-               .ForMember(des => des.IsActive, src => src.MapFrom(sr => sr.IsActive));
+               .ForMember(des => des.IsActive, src => src.MapFrom(sr => sr.user.IsActive));
 
 
 
