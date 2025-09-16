@@ -30,7 +30,7 @@ namespace AutoGo.Api
             builder.Services.AddAuthServices(builder.Configuration);
 
             builder.Services.AddApplicationServices();
-            builder.Host.UseSerilog();
+           // builder.Host.UseSerilog();
 
         
             var app = builder.Build();

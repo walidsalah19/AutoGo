@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoGo.Application.Users.Customers.Command.UpdateCustomer;
 
 namespace AutoGo.Infrastructure.Services.Identity
 {
@@ -63,16 +64,16 @@ namespace AutoGo.Infrastructure.Services.Identity
            return await _userManager.FindByIdAsync(userId);
         }
 
-        public async Task<Result<string>> UpdateAsync(ApplicationUser userModel)
+        public async Task<Result<string>> UpdateAsync(UpdateCustomerCommand userModel)
         {
-            var user = await GetUserById(userModel.Id);
+            var user = await GetUserById(userModel.customerId);
             if(user==null)
                 return Result<string>.Failure(new Error(message: "User not found", code: (int)ErrorCodes.NotFound));
             try
             {
                 user.Address = userModel.Address;
                 user.PhoneNumber = userModel.PhoneNumber;
-                user.UserName = userModel.UserName;
+                user.UserName = userModel.FullName;
                 user.Email = userModel.Email;
                 user.FullName = userModel.FullName;
                 

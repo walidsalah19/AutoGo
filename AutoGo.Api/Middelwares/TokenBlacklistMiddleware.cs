@@ -53,10 +53,13 @@ namespace AutoGo.Api.Middelwares
                 catch
                 {
                     // لو الـ token مش صحيح نخليه يعدي على الـ Authentication middleware عشان يرفضه
+                    throw;
                 }
+
             }
 
             await requestDelegate(context);
+
         }
     }
 }

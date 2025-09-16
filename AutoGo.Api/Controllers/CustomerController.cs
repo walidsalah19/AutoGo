@@ -1,6 +1,7 @@
 ﻿using AutoGo.Api.Extentions;
 using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Users.Customers.Command.CreateCustomer;
+using AutoGo.Application.Users.Customers.Command.UpdateCustomer;
 using AutoGo.Application.Users.Customers.Queries.AllCustomers;
 using AutoGo.Application.Users.Customers.Queries.GetCustomerById;
 using AutoGo.Domain.Enums;
@@ -40,6 +41,13 @@ namespace AutoGo.Api.Controllers
         [Authorize]
         [HttpGet("GetCustomerById")]
         public async Task<IActionResult> CutomerById([FromQuery] GetCustomerById customer)
+        {
+            var res = await mediator.Send(customer);
+            return this.HandleResult(res);
+        }
+        [Authorize(Roles =nameof(UserRole.Customer))]
+        [HttpPut]
+        public async Task<IActionResult> UpdateCutomer([FromBody] UpdateCustomerCommand customer)
         {
             var res = await mediator.Send(customer);
             return this.HandleResult(res);

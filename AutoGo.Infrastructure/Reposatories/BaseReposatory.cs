@@ -23,9 +23,9 @@ namespace AutoGo.Infrastructure.Reposatories
             await appDbContext.Set<T>().AddAsync(entity);
         }
 
-        public Task<T> GetEntityById(string id)
+        public async Task<T> GetEntityById(string id)
         {
-            throw new NotImplementedException();
+          return  await appDbContext.Set<T>().FindAsync(id);
         }
 
         public Task Remove(T entity)
@@ -33,9 +33,12 @@ namespace AutoGo.Infrastructure.Reposatories
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            appDbContext.Set<T>().Update(entity);
         }
     }
 }

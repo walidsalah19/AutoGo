@@ -26,13 +26,13 @@ namespace AutoGo.Api.Middelwares
                     {
                         statusCode = (int)HttpStatusCode.BadRequest;
 
-                        var errors = string.Join(" ; ", validationException.Errors.Select(error => new Error
+                        var errors =  validationException.Errors.Select(error => new Error
                         (
                             //Property = error.PropertyName,
                             message: error.ErrorMessage,
                             code :statusCode
                         //code: statusCode.ToString()
-                        )));
+                        ));
 
                         response = Result<object>.Failure(errors);
                     }
