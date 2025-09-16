@@ -29,6 +29,7 @@ namespace AutoGo.Application.Mapping
 
 
             CreateMap<Customer, CustomerDto>()
+               .ForMember(des => des.CustomerId, src => src.MapFrom(sr => sr.userId))
                .ForMember(des => des.FullName, src => src.MapFrom(sr => sr.user.FullName))
                .ForMember(des => des.Email, src => src.MapFrom(sr => sr.user.Email))
                .ForMember(des => des.Address, src => src.MapFrom(sr => sr.user.Address))

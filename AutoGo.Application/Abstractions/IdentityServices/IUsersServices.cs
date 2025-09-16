@@ -12,6 +12,7 @@ namespace AutoGo.Application.Abstractions.IdentityServices
     {
         Task<Result<string>> CreateAsync(ApplicationUser user, string role, string password);
         Task<Result<string>> DeleteAsync(string userId);
-       // Task<Result<string>> UpdateAsync(ApplicationUser user);
+        Task<Result<string>> UpdateAsync(ApplicationUser userModel);
+
     }
 }

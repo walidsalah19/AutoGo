@@ -39,7 +39,7 @@ namespace AutoGo.Infrastructure.Services.Identity
         public async Task<Result<string>> DeleteAsync(string userId)
         {
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await GetUserById(userId);
 
             if (user == null)
                 return Result<string>.Failure(new Error(message: "User not found", code:(int) ErrorCodes.NotFound));
@@ -54,7 +54,37 @@ namespace AutoGo.Infrastructure.Services.Identity
             }
             catch (Exception r)
             {
-                throw r;
+                throw ;
+            }
+        }
+
+        private async Task<ApplicationUser> GetUserById(string userId)
+        {
+           return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<Result<string>> UpdateAsync(ApplicationUser userModel)
+        {
+            var user = await GetUserById(userModel.Id);
+            if(user==null)
+                return Result<string>.Failure(new Error(message: "User not found", code: (int)ErrorCodes.NotFound));
+            try
+            {
+                user.Address = userModel.Address;
+                user.PhoneNumber = userModel.PhoneNumber;
+                user.UserName = userModel.UserName;
+                user.Email = userModel.Email;
+                user.FullName = userModel.FullName;
+                
+                var result = await _userManager.UpdateAsync(user);
+
+                return result.Succeeded
+                    ? Result<string>.Success("User Updated successfully")
+                    : Result<string>.Failure(result.Errors.Select(e => e.Description).ToList());
+            }
+            catch (Exception r)
+            {
+                throw;
             }
         }
     }
