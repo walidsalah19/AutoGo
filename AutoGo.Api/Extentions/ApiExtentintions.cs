@@ -41,6 +41,9 @@ namespace AutoGo.Api.Extentions
 
             // segnalr
             //services.AddSignalR();
+
+            //بنستخدمه عشان نوصل لمعلومات ال request زي البيانات token 
+            services.AddHttpContextAccessor();
             return services;
         }
 

@@ -55,6 +55,7 @@ namespace AutoGo.Api
             app.ExceptionHandling();
 
             app.UseMiddleware<LoggingMiddleware>();
+            app.UseMiddleware<TokenBlacklistMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();

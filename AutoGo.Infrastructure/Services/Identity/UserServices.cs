@@ -42,7 +42,7 @@ namespace AutoGo.Infrastructure.Services.Identity
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
-                return Result<string>.Failure(new Error(message: "User not found", code: ErrorCodes.NotFound.ToString()));
+                return Result<string>.Failure(new Error(message: "User not found", code:(int) ErrorCodes.NotFound));
 
             try
             {

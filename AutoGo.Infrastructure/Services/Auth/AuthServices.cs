@@ -35,18 +35,18 @@ namespace AutoGo.Infrastructure.Services.Auth
         {
             var user = await userManager.FindByIdAsync(userId);
             if (user == null)
-              return Result<AuthResponse>.Failure(new Error(message: "Invalid credentials", code: ErrorCodes.NotFound.ToString()));
+              return Result<AuthResponse>.Failure(new Error(message: "Invalid credentials", code: (int)ErrorCodes.NotFound));
             var result = await signInManager.CheckPasswordSignInAsync(user, currentPassword, false);
 
             if (!result.Succeeded)
-                return Result<AuthResponse>.Failure(new Error(message: "the current password is wronge", code: ErrorCodes.Unauthorized.ToString()));
+                return Result<AuthResponse>.Failure(new Error(message: "the current password is wronge", code:(int) ErrorCodes.Unauthorized));
 
             var res = await userManager.ChangePasswordAsync(user,currentPassword,newPassword);
 
             if(!res.Succeeded)
             {
                 var errorMessages = string.Join(", ", res.Errors.Select(e => e.Description));
-                return Result<AuthResponse>.Failure(new Error(message: errorMessages, code: ErrorCodes.BadRequest.ToString()));
+                return Result<AuthResponse>.Failure(new Error(message: errorMessages, code: (int)ErrorCodes.BadRequest));
 
             }
 
@@ -61,13 +61,13 @@ namespace AutoGo.Infrastructure.Services.Auth
                    ?? await userManager.FindByEmailAsync(usernameOrEmail);
 
             if (user == null)
-                return Result<AuthResponse>.Failure(new Error(message: "Invalid credentials", code: ErrorCodes.NotFound.ToString()));
+                return Result<AuthResponse>.Failure(new Error(message: "Invalid credentials", code: (int)ErrorCodes.NotFound));
             else if (!user.IsActive)
-                return Result<AuthResponse>.Failure(new Error(message: "Your account is not active ", code: ErrorCodes.NotFound.ToString()));
+                return Result<AuthResponse>.Failure(new Error(message: "Your account is not active ", code:(int) ErrorCodes.NotFound));
 
             var result = await signInManager.CheckPasswordSignInAsync(user, password, false);
             if (!result.Succeeded)
-                return Result<AuthResponse>.Failure(new Error(message: "Wronge Password", code: ErrorCodes.Unauthorized.ToString()));
+                return Result<AuthResponse>.Failure(new Error(message: "Wronge Password", code: (int)ErrorCodes.Unauthorized));
 
             return await GenerateAuthResponse(user);
         }
@@ -86,16 +86,16 @@ namespace AutoGo.Infrastructure.Services.Auth
                              .FirstOrDefaultAsync(x => x.Token == refreshToken&&x.UserId.Equals(userId));
 
             if (token == null)
-                return Result<AuthResponse>.Failure(new Error("Refresh token not found", ErrorCodes.NotFound.ToString()));
+                return Result<AuthResponse>.Failure(new Error("Refresh token not found", (int)ErrorCodes.NotFound));
 
             else if (!token.user.IsActive)
-                return Result<AuthResponse>.Failure(new Error(message: "Your account is not active ", code: ErrorCodes.NotFound.ToString()));
+                return Result<AuthResponse>.Failure(new Error(message: "Your account is not active ", code: (int)ErrorCodes.NotFound));
 
             if (token.ExpireOnUtc < DateTime.UtcNow)
-                return Result<AuthResponse>.Failure(new Error("Refresh token expired", ErrorCodes.Forbidden.ToString()));
+                return Result<AuthResponse>.Failure(new Error("Refresh token expired", (int)ErrorCodes.Forbidden));
 
-            if (token.user == null /* || !token.user.IsActive */)
-                return Result<AuthResponse>.Failure(new Error("User is inactive", ErrorCodes.Forbidden.ToString()));
+            if (token.user == null && !token.user.IsActive )
+                return Result<AuthResponse>.Failure(new Error("User is inactive", (int)ErrorCodes.Forbidden));
 
             var roles = await GetUserRoles(token.user);
             var accessToken = tokenService.GenerateTokens(token.user, roles);
@@ -142,5 +142,16 @@ namespace AutoGo.Infrastructure.Services.Auth
             return Result<AuthResponse>.Success(tokens);
         }
 
+        public async Task<Result<string>> ActivationUserAsync(string userId, bool isActive)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return Result<string>.Failure(new Error(message: "Invalid credentials", code: (int)ErrorCodes.NotFound));
+
+            user.IsActive = isActive;
+            await userManager.UpdateAsync(user);
+            return Result<string>.Success($"Change the {user.FullName} Activation status successfully");
+        }
     }
 }

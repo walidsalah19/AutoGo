@@ -45,6 +45,8 @@ namespace AutoGo.Infrastructure.Extentions
             {
                 options.Configuration = config.GetConnectionString("Redis");
             });
+           
+
             services.AddHangfire((sp, config) =>
             {
                 var connection = sp.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
@@ -65,6 +67,10 @@ namespace AutoGo.Infrastructure.Extentions
             services.AddScoped(typeof(IBaseReposatory<>),typeof(BaseReposatory<>));
             //unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //token block services
+            services.AddScoped<ITokenBlacklistService, TokenBlacklistService>();
+
 
             return services;
         }
