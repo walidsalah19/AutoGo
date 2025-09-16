@@ -1,4 +1,5 @@
 ﻿using AutoGo.Application.Users.Customers.Command.CreateCustomer;
+using AutoGo.Application.Users.Customers.Command.UpdateCustomer;
 using AutoGo.Application.Users.Customers.Dtos;
 using AutoGo.Domain.Models;
 using AutoMapper;
@@ -27,7 +28,7 @@ namespace AutoGo.Application.Mapping
                 .ForMember(des => des.City, src => src.MapFrom(sr => sr.City))
                 .ForMember(des => des.Country, src => src.MapFrom(sr => sr.Country));
 
-
+           
             CreateMap<Customer, CustomerDto>()
                .ForMember(des => des.CustomerId, src => src.MapFrom(sr => sr.userId))
                .ForMember(des => des.FullName, src => src.MapFrom(sr => sr.user.FullName))

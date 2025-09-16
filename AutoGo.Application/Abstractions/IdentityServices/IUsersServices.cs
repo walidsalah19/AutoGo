@@ -1,5 +1,6 @@
-﻿using AutoGo.Domain.Models;
-using AutoGo.Application.Common.Result;
+﻿using AutoGo.Application.Common.Result;
+using AutoGo.Application.Users.Customers.Command.UpdateCustomer;
+using AutoGo.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace AutoGo.Application.Abstractions.IdentityServices
     {
         Task<Result<string>> CreateAsync(ApplicationUser user, string role, string password);
         Task<Result<string>> DeleteAsync(string userId);
-        Task<Result<string>> UpdateAsync(ApplicationUser userModel);
+        Task<Result<string>> UpdateAsync(UpdateCustomerCommand userModel);
 
     }
 }
