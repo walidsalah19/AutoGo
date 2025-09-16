@@ -2,6 +2,8 @@
 using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Users.Customers.Command.CreateCustomer;
 using AutoGo.Application.Users.Customers.Queries.AllCustomers;
+using AutoGo.Application.Users.Customers.Queries.GetCustomerById;
+using AutoGo.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,11 +30,18 @@ namespace AutoGo.Api.Controllers
             var res = await mediator.Send(customer);
             return this.HandleResult(res);
         }
-        [Authorize(Roles ="Admin")]
-        [HttpGet]
+        [Authorize(Roles =nameof(UserRole.Admin))]
+        [HttpGet("AllCustomers")]
         public async Task<IActionResult> AllCutomers([FromQuery]PageParameters pageParameters)
         {
             var res = await mediator.Send(new AllCustomersQuery { PageParameters=pageParameters});
+            return this.HandleResult(res);
+        }
+        [Authorize]
+        [HttpGet("GetCustomerById")]
+        public async Task<IActionResult> CutomerById([FromQuery] GetCustomerById customer)
+        {
+            var res = await mediator.Send(customer);
             return this.HandleResult(res);
         }
     }

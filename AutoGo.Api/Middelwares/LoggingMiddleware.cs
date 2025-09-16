@@ -20,8 +20,7 @@ public class LoggingMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         // Log Request
-        try
-        {
+      
             // Log Request
             await LogRequest(context);
 
@@ -32,11 +31,11 @@ public class LoggingMiddleware
 
             // Log Response
             await LogResponse(context, stopwatch.ElapsedMilliseconds);
-        }
-        catch (Exception ex)
-        {
-            await HandleExceptionAsync(context, ex);
-        }
+        
+        //catch (Exception ex)
+        //{
+        //    await HandleExceptionAsync(context, ex);
+        //}
     }
 
     private async Task LogRequest(HttpContext context)
@@ -70,22 +69,6 @@ public class LoggingMiddleware
         builder.AppendLine($"Execution Time: {elapsedMilliseconds}ms");
 
         _logger.LogInformation(builder.ToString());
-    }
-    private async Task HandleExceptionAsync(HttpContext context, Exception ex)
-    {
-        _logger.LogError(ex, $"An unhandled exception occurred while processing the request. Path: {context.Request.Path}");
-
-        // يمكن ترجع JSON بشكل مرتب للمستخدم
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        context.Response.ContentType = "application/json";
-
-        var result = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            error = "An unexpected error occurred. Please try again later.",
-            details = ex.Message // لو عاوز تظهر التفاصيل للمطور بس مش للمستخدم النهائي
-        });
-
-        await context.Response.WriteAsync(result);
     }
 }
 
