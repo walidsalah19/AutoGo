@@ -48,7 +48,7 @@ namespace AutoGo.Application.Users.Customers.Command.CreateCustomer
 			catch (Exception ex)
 			{
 				// ✅ ممكن هنا تضيف Rollback لليوزر لو كان اتسجل بالفعل
-				return Result<string>.Failure(new Error(message: ex.Message, code: ErrorCodes.BadRequest.ToString()));
+				return Result<string>.Failure(new Error(message: ex.Message, code:(int) ErrorCodes.BadRequest));
 			}
 
 		}

@@ -35,8 +35,7 @@ namespace AutoGo.Infrastructure.Services.Auth
             {
                 userClaims.Add(new Claim(ClaimTypes.Role, item));
             }
-            var j = configuration["JWT:SecritKey"];
-            Console.WriteLine(j);
+            var expirationHours = int.Parse(configuration["JWT:ExpireHours"]);
             var symmetric = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SecretKey"]));
 
             SigningCredentials signing = new SigningCredentials(symmetric, SecurityAlgorithms.HmacSha256);
@@ -45,7 +44,7 @@ namespace AutoGo.Infrastructure.Services.Auth
             JwtSecurityToken jwtSecurity = new JwtSecurityToken(
                     audience: configuration["JWT:AudienceIP"],
                     issuer: configuration["JWT:IssuerIP"],
-                    expires: DateTime.Now.AddHours(5),
+                    expires: DateTime.Now.AddHours(expirationHours),
                     claims: userClaims,
                     signingCredentials: signing
                 );

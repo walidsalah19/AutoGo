@@ -1,4 +1,5 @@
 ﻿using AutoGo.Api.Extentions;
+using AutoGo.Application.Authintication.Activation;
 using AutoGo.Application.Authintication.ChangePassword;
 using AutoGo.Application.Authintication.Login;
 using AutoGo.Application.Authintication.Logout;
@@ -29,6 +30,7 @@ namespace AutoGo.Api.Controllers
             var res = await mediator.Send(loginComand);
             return this.HandleResult(res);
         }
+        [Authorize]
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand commad)
         {
@@ -36,7 +38,6 @@ namespace AutoGo.Api.Controllers
             return this.HandleResult(res);
         }
         [HttpPost("RefreshToken")]
-
         public async Task<IActionResult> RefreshToken([FromBody] RefrashTokenCommad commad)
         {
             var res = await mediator.Send(commad);
@@ -47,6 +48,13 @@ namespace AutoGo.Api.Controllers
         public async Task<IActionResult> Logout([FromQuery] string userId)
         {
             var res = await mediator.Send(new LogoutCommand { userId = userId });
+            return this.HandleResult(res);
+        }
+        [Authorize(Roles = nameof(UserRole.Admin))]
+        [HttpPut("ActiveUsers")]
+        public async Task<IActionResult> Activation([FromBody] ChangeActivationCommand command)
+        {
+            var res = await mediator.Send(command);
             return this.HandleResult(res);
         }
     }

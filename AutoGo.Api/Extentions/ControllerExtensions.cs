@@ -14,7 +14,7 @@ namespace AutoGo.Api.Extentions
             if (!result.isSuccessed)
             {
                 
-                if (result.Error is Error err && Enum.TryParse<ErrorCodes>(err.code, out var errorCode))
+                if (result.Error is Error err && Enum.TryParse<ErrorCodes>(err.code.ToString(), out var errorCode))
                     {
                     return errorCode switch
                     {

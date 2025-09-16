@@ -28,6 +28,7 @@ namespace AutoGo.Api.Controllers
             var res = await mediator.Send(customer);
             return this.HandleResult(res);
         }
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<IActionResult> AllCutomers([FromQuery]PageParameters pageParameters)
         {

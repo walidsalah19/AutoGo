@@ -9,9 +9,9 @@ namespace AutoGo.Application.Common.Result
    public class Error
     {
       public  string message { get; }
-      public string code { get; }
+      public int code { get; }
 
-        public Error(string message, string code)
+        public Error(string message, int code)
         {
             this.message = message;
             this.code = code;

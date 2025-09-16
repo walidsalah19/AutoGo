@@ -30,8 +30,8 @@ namespace AutoGo.Api.Middelwares
                         (
                             //Property = error.PropertyName,
                             message: error.ErrorMessage,
-                            code : error.ErrorCode
-                            //code: statusCode.ToString()
+                            code :statusCode
+                        //code: statusCode.ToString()
                         ));
 
                         response = Result<object>.Failure(errors);
@@ -44,7 +44,7 @@ namespace AutoGo.Api.Middelwares
                         (
                             message: exception?.Message,
                             // code=  exception?.StackTrace,
-                            code: statusCode.ToString()
+                            code: statusCode
 
                         ));
                     }
@@ -57,6 +57,7 @@ namespace AutoGo.Api.Middelwares
                     });
 
                     await context.Response.WriteAsync(json);
+                   
                 });
             });
         }
