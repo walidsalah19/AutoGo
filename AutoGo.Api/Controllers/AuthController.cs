@@ -1,9 +1,9 @@
 ﻿using AutoGo.Api.Extentions;
-using AutoGo.Application.Authintication.Activation;
 using AutoGo.Application.Authintication.ChangePassword;
 using AutoGo.Application.Authintication.Login;
 using AutoGo.Application.Authintication.Logout;
 using AutoGo.Application.Authintication.RefreshToken;
+using AutoGo.Application.Users.ActivationUsers.Activation;
 using AutoGo.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -50,12 +50,6 @@ namespace AutoGo.Api.Controllers
             var res = await mediator.Send(new LogoutCommand { userId = userId });
             return this.HandleResult(res);
         }
-        [Authorize(Roles = nameof(UserRole.Admin))]
-        [HttpPut("ActiveUsers")]
-        public async Task<IActionResult> Activation([FromBody] ChangeActivationCommand command)
-        {
-            var res = await mediator.Send(command);
-            return this.HandleResult(res);
-        }
+       
     }
 }

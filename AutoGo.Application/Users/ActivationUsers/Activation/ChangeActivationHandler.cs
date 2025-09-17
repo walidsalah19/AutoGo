@@ -1,4 +1,5 @@
 ﻿using AutoGo.Application.Abstractions.AuthServices;
+using AutoGo.Application.Abstractions.IdentityServices;
 using AutoGo.Application.Common.Result;
 using AutoGo.Domain.Enums;
 using MediatR;
@@ -11,21 +12,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoGo.Application.Authintication.Activation
+namespace AutoGo.Application.Users.ActivationUsers.Activation
 {
     public class ChangeActivationHandler : IRequestHandler<ChangeActivationCommand, Result<string>>
     {
-        private readonly IAuthServices authServices;
+        private readonly IUsersServices usersServices;
 
-        public ChangeActivationHandler(IAuthServices authServices)
+        public ChangeActivationHandler(IUsersServices usersServices)
         {
-            this.authServices = authServices;
+            this.usersServices = usersServices;
         }
 
         public async Task<Result<string>> Handle(ChangeActivationCommand request, CancellationToken cancellationToken)
         {
 
-            var res =await authServices.ActivationUserAsync(userId: request.userId, isActive: request.isActive);
+            var res =await usersServices.ActivationUserAsync(userId: request.userId, isActive: request.isActive);
             return res;
         }
     }

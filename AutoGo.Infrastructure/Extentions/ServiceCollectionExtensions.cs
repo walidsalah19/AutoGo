@@ -1,28 +1,30 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using AutoGo.Application.Abstractions.AuthServices;
+using AutoGo.Application.Abstractions.IdentityServices;
+using AutoGo.Application.Abstractions.Jops;
+using AutoGo.Application.Common.Context;
+using AutoGo.Domain.Interfaces.Repo;
+using AutoGo.Domain.Interfaces.UnitofWork;
+using AutoGo.Domain.Models;
+using AutoGo.Infrastructure.Data.Context;
+using AutoGo.Infrastructure.Jops;
+using AutoGo.Infrastructure.Reposatories;
+using AutoGo.Infrastructure.Services.Auth;
+using AutoGo.Infrastructure.Services.Identity;
+using AutoGo.Infrastructure.UnitofWork;
+using FluentValidation;
+using Hangfire;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using MediatR;
-using Hangfire;
-using FluentValidation;
-using AutoGo.Infrastructure.Data.Context;
-using AutoGo.Domain.Models;
-using AutoGo.Application.Common.Context;
-using AutoGo.Application.Abstractions.AuthServices;
-using AutoGo.Infrastructure.Services.Auth;
-using AutoGo.Application.Abstractions.IdentityServices;
-using AutoGo.Infrastructure.Services.Identity;
-using AutoGo.Domain.Interfaces.Repo;
-using AutoGo.Infrastructure.Reposatories;
-using AutoGo.Domain.Interfaces.UnitofWork;
-using AutoGo.Infrastructure.UnitofWork;
 
 namespace AutoGo.Infrastructure.Extentions
 {
@@ -71,7 +73,8 @@ namespace AutoGo.Infrastructure.Extentions
             //token block services
             services.AddScoped<ITokenBlacklistService, TokenBlacklistService>();
 
-
+            //jops
+            services.AddScoped<IBackgroundJops, BackgroundJops>();
             return services;
         }
     }

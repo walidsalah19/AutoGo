@@ -39,7 +39,7 @@ namespace AutoGo.Infrastructure.Services.Auth
                         "❌ Failed to connect to Redis while checking token status. JTI: {Jti}", jti);
 
                     // ممكن هنا ترجع false (تسمح للتوكن) أو true (تمنع الوصول) حسب ما تحب
-                    return false;
+                    return true;
                 }
             }
 

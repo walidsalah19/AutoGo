@@ -23,7 +23,7 @@ public class LoggingMiddleware
             try
             {
                 // Log the incoming request
-                await LogRequest(context);
+                await LogRequest(context);  
 
                 // Capture the response in a memory stream
                 var originalBodyStream = context.Response.Body;
