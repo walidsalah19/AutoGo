@@ -10,6 +10,6 @@ namespace AutoGo.Application.Abstractions.Jops
 {
     public interface IBackgroundJops
     {
-        public Task DeactivateForSpecificPeriod(DeactivateForSpecificPeriod period);
+        public Task DeactivateForSpecificPeriod(DeactivateForSpecificPeriod period, Domain.Models.ApplicationUser user);
     }
 }
