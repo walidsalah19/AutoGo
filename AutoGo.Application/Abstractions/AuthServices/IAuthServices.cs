@@ -14,7 +14,6 @@ namespace AutoGo.Application.Abstractions.AuthServices
         Task<Result<string>> LogoutAsync(string userId);
         Task<Result<AuthResponse>> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
         Task<Result<AuthResponse>> RefreshTokenAsync(string refreshToken, string userId);
-        Task<Result<string>> ActivationUserAsync(string userId,bool isActive);
 
     }
 }

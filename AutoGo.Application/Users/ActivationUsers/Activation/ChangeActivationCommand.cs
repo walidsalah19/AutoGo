@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoGo.Application.Authintication.Activation
+namespace AutoGo.Application.Users.ActivationUsers.Activation
 {
     public class ChangeActivationCommand : IRequest<Result<string>>
     {

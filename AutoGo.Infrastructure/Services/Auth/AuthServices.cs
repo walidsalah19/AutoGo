@@ -141,17 +141,5 @@ namespace AutoGo.Infrastructure.Services.Auth
             tokens.RefreshToken = await SaveRefreshToken(user.Id);
             return Result<AuthResponse>.Success(tokens);
         }
-
-        public async Task<Result<string>> ActivationUserAsync(string userId, bool isActive)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-
-            if (user == null)
-                return Result<string>.Failure(new Error(message: "Invalid credentials", code: (int)ErrorCodes.NotFound));
-
-            user.IsActive = isActive;
-            await userManager.UpdateAsync(user);
-            return Result<string>.Success($"Change the {user.FullName} Activation status successfully");
-        }
     }
 }
