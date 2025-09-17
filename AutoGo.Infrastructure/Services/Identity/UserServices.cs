@@ -59,7 +59,7 @@ namespace AutoGo.Infrastructure.Services.Identity
             }
         }
 
-        private async Task<ApplicationUser> GetUserById(string userId)
+        public async Task<ApplicationUser> GetUserById(string userId)
         {
            return await _userManager.FindByIdAsync(userId);
         }
@@ -88,9 +88,9 @@ namespace AutoGo.Infrastructure.Services.Identity
                 throw;
             }
         }
-        public async Task<Result<string>> ActivationUserAsync(string userId, bool isActive)
+        public async Task<Result<string>> ActivationUserAsync(ApplicationUser user, bool isActive)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+           // var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
                 return Result<string>.Failure(new Error(message: "Invalid credentials", code: (int)ErrorCodes.NotFound));

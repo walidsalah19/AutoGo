@@ -25,6 +25,7 @@ namespace AutoGo.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddFluentEmail(builder.Configuration);
             builder.Services.AddSwaggerServices();
             builder.Services.AddApiServices();
             builder.Services.AddAuthServices(builder.Configuration);

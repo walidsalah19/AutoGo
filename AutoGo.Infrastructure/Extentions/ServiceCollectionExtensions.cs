@@ -1,15 +1,17 @@
 ﻿using AutoGo.Application.Abstractions.AuthServices;
 using AutoGo.Application.Abstractions.IdentityServices;
 using AutoGo.Application.Abstractions.Jops;
+using AutoGo.Application.Abstractions.SendingEmail;
 using AutoGo.Application.Common.Context;
 using AutoGo.Domain.Interfaces.Repo;
 using AutoGo.Domain.Interfaces.UnitofWork;
 using AutoGo.Domain.Models;
 using AutoGo.Infrastructure.Data.Context;
-using AutoGo.Infrastructure.Jops;
 using AutoGo.Infrastructure.Reposatories;
 using AutoGo.Infrastructure.Services.Auth;
 using AutoGo.Infrastructure.Services.Identity;
+using AutoGo.Infrastructure.Services.Jops;
+using AutoGo.Infrastructure.Services.SendingEmail;
 using AutoGo.Infrastructure.UnitofWork;
 using FluentValidation;
 using Hangfire;
@@ -75,6 +77,9 @@ namespace AutoGo.Infrastructure.Extentions
 
             //jops
             services.AddScoped<IBackgroundJops, BackgroundJops>();
+
+            //sending email
+            services.AddScoped<ISendingEmailServices, SendingEmailServices>();
             return services;
         }
     }
