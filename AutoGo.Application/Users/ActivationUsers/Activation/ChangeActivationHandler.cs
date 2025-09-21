@@ -18,19 +18,16 @@ namespace AutoGo.Application.Users.ActivationUsers.Activation
     public class ChangeActivationHandler : IRequestHandler<ChangeActivationCommand, Result<string>>
     {
         private readonly IUsersServices usersServices;
-        private readonly IMediator mediator;
 
-        public ChangeActivationHandler(IUsersServices usersServices, IMediator mediator)
+        public ChangeActivationHandler(IUsersServices usersServices)
         {
             this.usersServices = usersServices;
-            this.mediator = mediator;
         }
 
         public async Task<Result<string>> Handle(ChangeActivationCommand request, CancellationToken cancellationToken)
         {
             var user = await usersServices.GetUserById(request.userId);
             var res =await usersServices.ActivationUserAsync(user, isActive: request.isActive);
-            await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "user Activation", body: $"the admin change your activation ")));
             return res;
         }
     }
