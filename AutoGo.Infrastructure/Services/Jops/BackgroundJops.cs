@@ -28,9 +28,8 @@ namespace AutoGo.Infrastructure.Services.Jops
             this.mediator = mediator;
         }
 
-        public async Task DeactivateForSpecificPeriod(DeactivateForSpecificPeriod period, ApplicationUser user)
-        {
-            // Send first email immediately (notify about deactivation)
+        public  async Task DeactivateForSpecificPeriod(DeactivateForSpecificPeriod period, ApplicationUser user)
+        {// Send first email immediately (notify about deactivation)
             await mediator.Publish(new SendingEmailEvent(
                 new EmailMetaData(
                     toAddress: user.Email,
@@ -49,6 +48,22 @@ namespace AutoGo.Infrastructure.Services.Jops
             );
 
             logger.LogInformation($"Reactivation job scheduled for user {period.userId} at {jobTime} (JobId: {jobId})");
+
+            // Schedule sending reactivation email after activation job completes
+            BackgroundJob.ContinueJobWith(jobId,() => mediator.Publish(
+                                                 new SendingEmailEvent(
+                                                     new EmailMetaData(
+                                                         user.Email,
+                                                         "User Reactivated",
+                                                         "Your account has been reactivated successfully.",
+                                                         ""
+                                                     )
+                                                 ),
+                                                 CancellationToken.None
+                                             )
+                                         );
+
+
 
         }
     }

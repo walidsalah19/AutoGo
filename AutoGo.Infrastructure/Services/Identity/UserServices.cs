@@ -112,16 +112,9 @@ namespace AutoGo.Infrastructure.Services.Identity
 
             userModel.IsActive = isActive;
             await _userManager.UpdateAsync(userModel);
-            await SendActivationEmail(user, isActive);
             return Result<string>.Success($"Change the {userModel.FullName} Activation status successfully");
         }
 
-        private async Task  SendActivationEmail(ApplicationUser user ,bool isActive)
-        {
-            var message = isActive?"the admin active your account you can login and use our services": "the admin deactivate your account you can't login and use our services";
-            
-            await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Update account Data ", body: $"  Hi, {user.FullName}! \r\n {message} .\r\n ")));
-            
-        }
+       
     }
 }
