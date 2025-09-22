@@ -10,24 +10,24 @@ using AutoGo.Domain.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace AutoGo.Application.Users.Customers.Command.DeleteCustomer
+namespace AutoGo.Application.Users.DeleteCustomer
 {
-    public class DeleteCustomerHnadler : IRequestHandler<DeleteCustomerCommand, Result<string>>
+    public class DeleteUserHnadler : IRequestHandler<DeleteUserCommand, Result<string>>
     {
        
 
         private readonly IUsersServices _usersServices;
 
-        public DeleteCustomerHnadler(IUsersServices usersServices)
+        public DeleteUserHnadler(IUsersServices usersServices)
         {
             _usersServices = usersServices;
         }
 
 
-        public async Task<Result<string>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             
-               var res= await _usersServices.DeleteAsync(request.CustomerId);
+               var res= await _usersServices.DeleteAsync(request.UserId);
                return res;
 
         }

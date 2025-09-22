@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoGo.Application.Users.Dealer.Commands.CreateDealer;
 
 namespace AutoGo.Application.Mapping
 {
@@ -28,7 +29,8 @@ namespace AutoGo.Application.Mapping
                 .ForMember(des => des.City, src => src.MapFrom(sr => sr.City))
                 .ForMember(des => des.Country, src => src.MapFrom(sr => sr.Country));
 
-           
+         
+
             CreateMap<Customer, CustomerDto>()
                .ForMember(des => des.CustomerId, src => src.MapFrom(sr => sr.userId))
                .ForMember(des => des.FullName, src => src.MapFrom(sr => sr.user.FullName))
@@ -40,7 +42,26 @@ namespace AutoGo.Application.Mapping
                .ForMember(des => des.Country, src => src.MapFrom(sr => sr.Country))
                .ForMember(des => des.IsActive, src => src.MapFrom(sr => sr.user.IsActive));
 
+            CreateMap<CreateDealerCommand, ApplicationUser>()
+                .ForMember(des => des.FullName, src => src.MapFrom(sr => sr.UserName))
+                .ForMember(des => des.UserName, src => src.MapFrom(sr => sr.UserName))
+                .ForMember(des => des.Email, src => src.MapFrom(sr => sr.Email))
+                .ForMember(des => des.PhoneNumber, src => src.MapFrom(sr => sr.PhoneNumber))
+                .ForMember(des => des.Address, src => src.MapFrom(sr => sr.Address))
+                .ForMember(des => des.Id, src => src.MapFrom(sr => Guid.NewGuid()))
+                .ForMember(des => des.IsActive, src => src.MapFrom(sr => true));
 
+            CreateMap<CreateDealerCommand, Dealer>()
+                .ForMember(des => des.ShowroomName, src => src.MapFrom(sr => sr.ShowroomName))
+                .ForMember(des => des.Location, src => src.MapFrom(sr => sr.Location))
+                .ForMember(des => des.WebsiteUrl, src => src.MapFrom(sr => sr.WebsiteUrl))
+                .ForMember(des => des.Description, src => src.MapFrom(sr => sr.Description))
+                .ForMember(des => des.TaxNumber, src => src.MapFrom(sr => sr.TaxNumber))
+                .ForMember(des => des.LicenseNumber, src => src.MapFrom(sr => sr.LicenseNumber))
+                .ForMember(des => des.EstablishedYear, src => src.MapFrom(sr => sr.EstablishedYear))
+                .ForMember(des => des.TotalVehicles, src => src.MapFrom(sr => 0));
+
+ 
 
         }
     }

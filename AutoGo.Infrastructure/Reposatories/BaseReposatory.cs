@@ -22,12 +22,6 @@ namespace AutoGo.Infrastructure.Reposatories
         {
             await appDbContext.Set<T>().AddAsync(entity);
         }
-
-        public async Task<T> GetEntityById(string id)
-        {
-          return  await appDbContext.Set<T>().FindAsync(id);
-        }
-
         public async Task Remove(T entity)
         {
             var user =  appDbContext.Set<T>().Remove(entity);

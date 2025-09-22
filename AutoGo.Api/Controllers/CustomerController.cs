@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using AutoGo.Application.Users.Customers.Command.DeleteCustomer;
+using AutoGo.Application.Users.DeleteCustomer;
 
 namespace AutoGo.Api.Controllers
 {
@@ -53,12 +53,6 @@ namespace AutoGo.Api.Controllers
             var res = await mediator.Send(customer);
             return this.HandleResult(res);
         }
-        [Authorize(Roles = nameof(UserRole.Customer))]
-        [HttpDelete]
-        public async Task<IActionResult> DeleteCustomer([FromQuery] string customerId)
-        {
-            var res = await mediator.Send(new DeleteCustomerCommand{CustomerId=customerId});
-            return this.HandleResult(res);
-        }
+       
     }
 }

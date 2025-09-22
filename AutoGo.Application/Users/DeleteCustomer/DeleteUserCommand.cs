@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using AutoGo.Application.Common.Result;
 using MediatR;
 
-namespace AutoGo.Application.Users.Customers.Command.DeleteCustomer
+namespace AutoGo.Application.Users.DeleteCustomer
 {
-    public class DeleteCustomerCommand:IRequest<Result<string>>
+    public class DeleteUserCommand:IRequest<Result<string>>
     {
-        public string CustomerId { get; set; }
+        public string UserId { get; set; }
     }
 }

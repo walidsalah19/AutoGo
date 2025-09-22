@@ -18,35 +18,34 @@ namespace AutoGo.Api.Middelwares
 
                     var exceptionFeature = context.Features.Get<IExceptionHandlerFeature>();
                     var exception = exceptionFeature?.Error;
+                    var realException = exception is AggregateException agg ? agg.InnerException : exception;
 
                     object response;
                     int statusCode;
 
-                    if (exception is FluentValidation.ValidationException validationException)
+                    if (realException is FluentValidation.ValidationException validationException)
                     {
                         statusCode = (int)HttpStatusCode.BadRequest;
+                        var errors = validationException.Errors.Select(error => new
+                        {
+                            message = error.ErrorMessage,
+                            property = error.PropertyName
+                        });
 
-                        var errors =  validationException.Errors.Select(error => new Error
-                        (
-                            //Property = error.PropertyName,
-                            message: error.ErrorMessage,
-                            code :statusCode
-                        //code: statusCode.ToString()
-                        ));
-
-                        response = Result<object>.Failure(errors);
+                        response = new
+                        {
+                            isSuccessed = false,
+                            errors
+                        };
                     }
                     else
                     {
                         statusCode = (int)HttpStatusCode.InternalServerError;
-
-                        response = Result<Error>.Failure(new Error
-                        (
-                            message: exception?.Message,
-                            // code=  exception?.StackTrace,
-                            code: statusCode
-
-                        ));
+                        response = new
+                        {
+                            isSuccessed = false,
+                            error = realException?.Message
+                        };
                     }
 
                     context.Response.StatusCode = statusCode;
@@ -57,7 +56,6 @@ namespace AutoGo.Api.Middelwares
                     });
 
                     await context.Response.WriteAsync(json);
-                   
                 });
             });
         }
