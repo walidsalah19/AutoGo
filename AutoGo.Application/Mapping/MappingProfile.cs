@@ -33,7 +33,7 @@ namespace AutoGo.Application.Mapping
 
             CreateMap<Customer, CustomerDto>()
                .ForMember(des => des.CustomerId, src => src.MapFrom(sr => sr.userId))
-               .ForMember(des => des.FullName, src => src.MapFrom(sr => sr.user.FullName))
+               .ForMember(des => des.UserName, src => src.MapFrom(sr => sr.user.UserName))
                .ForMember(des => des.Email, src => src.MapFrom(sr => sr.user.Email))
                .ForMember(des => des.Address, src => src.MapFrom(sr => sr.user.Address))
                .ForMember(des => des.PhoneNumber, src => src.MapFrom(sr => sr.user.PhoneNumber))
@@ -43,7 +43,6 @@ namespace AutoGo.Application.Mapping
                .ForMember(des => des.IsActive, src => src.MapFrom(sr => sr.user.IsActive));
 
             CreateMap<CreateDealerCommand, ApplicationUser>()
-                .ForMember(des => des.FullName, src => src.MapFrom(sr => sr.UserName))
                 .ForMember(des => des.UserName, src => src.MapFrom(sr => sr.UserName))
                 .ForMember(des => des.Email, src => src.MapFrom(sr => sr.Email))
                 .ForMember(des => des.PhoneNumber, src => src.MapFrom(sr => sr.PhoneNumber))
@@ -53,7 +52,8 @@ namespace AutoGo.Application.Mapping
 
             CreateMap<CreateDealerCommand, Dealer>()
                 .ForMember(des => des.ShowroomName, src => src.MapFrom(sr => sr.ShowroomName))
-                .ForMember(des => des.Location, src => src.MapFrom(sr => sr.Location))
+                .ForMember(des => des.Latitude, src => src.MapFrom(sr => sr.Latitude))
+                .ForMember(des => des.Longitude, src => src.MapFrom(sr => sr.Longitude))
                 .ForMember(des => des.WebsiteUrl, src => src.MapFrom(sr => sr.WebsiteUrl))
                 .ForMember(des => des.Description, src => src.MapFrom(sr => sr.Description))
                 .ForMember(des => des.TaxNumber, src => src.MapFrom(sr => sr.TaxNumber))

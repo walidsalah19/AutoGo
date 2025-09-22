@@ -46,7 +46,7 @@ namespace AutoGo.Application.Users.Dealer.Commands.CreateDealer
                 dealer.UserId = applicationUser.Id;
                 await unitOfWork.Repository<Domain.Models.Dealer>().AddAsync(dealer);
                 await unitOfWork.CompleteAsync();
-                return Result<string>.Success($" Create Dealer Account is successfully for {applicationUser.FullName}");
+                return Result<string>.Success($" Create Dealer Account is successfully for {applicationUser.UserName}");
             }
             catch (Exception ex)
             {

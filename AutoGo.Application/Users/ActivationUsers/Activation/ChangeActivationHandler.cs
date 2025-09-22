@@ -38,7 +38,7 @@ namespace AutoGo.Application.Users.ActivationUsers.Activation
         {
             var message = isActive ? "the admin active your account you can login and use our services" : "the admin deactivate your account you can't login and use our services";
 
-            await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Update account Data ", body: $"  Hi, {user.FullName}! \r\n {message} .\r\n ")));
+            await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Update account Data ", body: $"  Hi, {user.UserName}! \r\n {message} .\r\n ")));
 
         }
     }

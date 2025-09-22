@@ -39,8 +39,10 @@ namespace AutoGo.Application.Users.Dealer.Commands.CreateDealer
                 .NotEmpty().WithMessage("Showroom name is required.")
                 .MaximumLength(150);
 
-            RuleFor(x => x.Location)
-                .NotEmpty().WithMessage("Location is required.");
+            RuleFor(x => x.Longitude)
+                .NotNull().WithMessage("Longitude is required.");
+            RuleFor(x => x.Latitude)
+                .NotNull().WithMessage("Latitude is required.");
 
             RuleFor(x => x.WebsiteUrl)
                 .Must(url => string.IsNullOrEmpty(url) || Uri.TryCreate(url, UriKind.Absolute, out _))

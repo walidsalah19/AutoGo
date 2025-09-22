@@ -38,7 +38,7 @@ namespace AutoGo.Infrastructure.Services.Identity
             {
                 return Result<string>.Failure(createResult.Errors.Select(e => e.Description).ToList());
             }
-            await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Creating account ", body: $" <h2>Welcome to AutoGo, {user.FullName}!</h2>\r\n        <p>Thank you for creating an account with us.</p>\r\n        <p>You can now log in and start using our services.</p> ")));
+            await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Creating account ", body: $" <h2>Welcome to AutoGo, {user.UserName}!</h2>\r\n        <p>Thank you for creating an account with us.</p>\r\n        <p>You can now log in and start using our services.</p> ")));
 
             await _userManager.AddToRoleAsync(user, role);
             
@@ -59,7 +59,7 @@ namespace AutoGo.Infrastructure.Services.Identity
                 var result = await _userManager.DeleteAsync(user);
                 if (result.Succeeded)
                 {
-                    await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Deleting account ", body: $"  Hi, {user.FullName}! \r\n Thank you for using our system .\r\n ")));
+                    await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Deleting account ", body: $"  Hi, {user.UserName}! \r\n Thank you for using our system .\r\n ")));
                 }
                 return result.Succeeded
                     ? Result<string>.Success("User deleted successfully")
@@ -87,12 +87,11 @@ namespace AutoGo.Infrastructure.Services.Identity
                 user.PhoneNumber = userModel.PhoneNumber;
                 user.UserName = userModel.FullName;
                 user.Email = userModel.Email;
-                user.FullName = userModel.FullName;
                 
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Update account Data ", body: $"  Hi, {user.FullName}! \r\n You update your data successfully .\r\n ")));
+                    await mediator.Publish(new SendingEmailEvent(new EmailMetaData(toAddress: user.Email, subject: "Update account Data ", body: $"  Hi, {user.UserName}! \r\n You update your data successfully .\r\n ")));
                 }
                 return result.Succeeded
                     ? Result<string>.Success("User Updated successfully")
@@ -112,7 +111,7 @@ namespace AutoGo.Infrastructure.Services.Identity
 
             userModel.IsActive = isActive;
             await _userManager.UpdateAsync(userModel);
-            return Result<string>.Success($"Change the {userModel.FullName} Activation status successfully");
+            return Result<string>.Success($"Change the {userModel.UserName} Activation status successfully");
         }
 
        

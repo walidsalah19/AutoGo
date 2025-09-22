@@ -8,8 +8,10 @@ namespace AutoGo.Application.Users.Dealer.Dtos
 {
     public class DealerDto
     {
-        public string FullName { get; set; }
+        public string UserName { get; set; }
         public string Address { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
         public string ShowroomName { get; set; }         // اسم المعرض
         public string Location { get; set; }             // العنوان
         public string WebsiteUrl { get; set; }           // موقع إلكتروني
