@@ -17,13 +17,13 @@ namespace AutoGo.Application.Users.Dealer.Commands.CreateDealer
         public string Passowrd { get; set; }
         public string PhoneNumber { get; set; }
         public string ShowroomName { get; set; }         // اسم المعرض
-        public string Location { get; set; }             // العنوان
         public string WebsiteUrl { get; set; }           // موقع إلكتروني
         public string Description { get; set; }          // وصف قصير عن المعرض
         public string TaxNumber { get; set; }
         public string LicenseNumber { get; set; }   // ترخيص مزاولة النشاط
         public int EstablishedYear { get; set; }         // سنة تأسيس المعرض
-
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
 
     }
 }

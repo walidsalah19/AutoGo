@@ -12,7 +12,6 @@ namespace AutoGo.Domain.Models
         public ApplicationUser User { get; set; }
 
         public string ShowroomName { get; set; }         // اسم المعرض
-        public string Location { get; set; }             // العنوان
         public string? WebsiteUrl { get; set; }           // موقع إلكتروني
         public string Description { get; set; }          // وصف قصير عن المعرض
         public string TaxNumber { get; set; }
@@ -20,6 +19,8 @@ namespace AutoGo.Domain.Models
 
         public int EstablishedYear { get; set; }         // سنة تأسيس المعرض
         public int TotalVehicles { get; set; }           // عدد العربيات الموجودة (ممكن تحديثه أو حسابه ديناميكياً)
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
 
         // Navigation
         public ICollection<Vehicle> Vehicles { get; set; }

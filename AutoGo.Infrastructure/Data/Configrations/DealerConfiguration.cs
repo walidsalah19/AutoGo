@@ -26,11 +26,12 @@ namespace AutoGo.Infrastructure.Data.Configrations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(d => d.Location)
-                .IsRequired()
-                .HasMaxLength(200);
+            builder.Property(d => d.Latitude)
+                .IsRequired();
 
-          
+            builder.Property(d => d.Longitude)
+                .IsRequired();
+
 
             builder.Property(d => d.WebsiteUrl)
                 .HasMaxLength(200);
