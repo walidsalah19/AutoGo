@@ -4,16 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoGo.Domain.Models
+namespace AutoGo.Application.Users.Dealer.Dtos
 {
-   public class Dealer :BaseEntity
+    public class DealerDto
     {
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
-
+        public string FullName { get; set; }
+        public string Address { get; set; }
         public string ShowroomName { get; set; }         // اسم المعرض
         public string Location { get; set; }             // العنوان
-        public string? WebsiteUrl { get; set; }           // موقع إلكتروني
+        public string WebsiteUrl { get; set; }           // موقع إلكتروني
         public string Description { get; set; }          // وصف قصير عن المعرض
         public string TaxNumber { get; set; }
         public string LicenseNumber { get; set; }   // ترخيص مزاولة النشاط
@@ -21,7 +20,8 @@ namespace AutoGo.Domain.Models
         public int EstablishedYear { get; set; }         // سنة تأسيس المعرض
         public int TotalVehicles { get; set; }           // عدد العربيات الموجودة (ممكن تحديثه أو حسابه ديناميكياً)
 
-        // Navigation
-        public ICollection<Vehicle> Vehicles { get; set; }
+        public bool IsActive { get; set; } = true;
+
+
     }
 }

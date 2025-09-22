@@ -25,4 +25,8 @@
     <ProjectReference Include="..\AutoGo.Domain\AutoGo.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\Dealer\Queries\" />
+  </ItemGroup>
+
 </Project>
