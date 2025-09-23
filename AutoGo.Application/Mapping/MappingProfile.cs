@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoGo.Application.Users.Dealer.Commands.CreateDealer;
+using AutoGo.Application.Users.Dealer.Dtos;
 
 namespace AutoGo.Application.Mapping
 {
@@ -60,8 +61,30 @@ namespace AutoGo.Application.Mapping
                 .ForMember(des => des.LicenseNumber, src => src.MapFrom(sr => sr.LicenseNumber))
                 .ForMember(des => des.EstablishedYear, src => src.MapFrom(sr => sr.EstablishedYear))
                 .ForMember(des => des.TotalVehicles, src => src.MapFrom(sr => 0));
+            CreateMap<CreateDealerCommand, DealerDto>()
+                .ForMember(des => des.UserName, src => src.MapFrom(sr => sr.UserName))
+                .ForMember(des => des.Email, src => src.MapFrom(sr => sr.Email))
+                .ForMember(des => des.PhoneNumber, src => src.MapFrom(sr => sr.PhoneNumber))
+                .ForMember(des => des.Address, src => src.MapFrom(sr => sr.Address))
+                .ForMember(des => des.IsActive, src => src.MapFrom(sr => true))
+                .ForMember(des => des.ShowroomName, src => src.MapFrom(sr => sr.ShowroomName))
+                .ForMember(des => des.Latitude, src => src.MapFrom(sr => sr.Latitude))
+                .ForMember(des => des.Longitude, src => src.MapFrom(sr => sr.Longitude))
+                .ForMember(des => des.WebsiteUrl, src => src.MapFrom(sr => sr.WebsiteUrl))
+                .ForMember(des => des.Description, src => src.MapFrom(sr => sr.Description))
+                .ForMember(des => des.TaxNumber, src => src.MapFrom(sr => sr.TaxNumber))
+                .ForMember(des => des.LicenseNumber, src => src.MapFrom(sr => sr.LicenseNumber))
+                .ForMember(des => des.EstablishedYear, src => src.MapFrom(sr => sr.EstablishedYear))
+                .ForMember(des => des.TotalVehicles, src => src.MapFrom(sr => 0));
 
- 
+
+            CreateMap<Dealer, DealerDto>()
+                .ForMember(des => des.UserName, src => src.MapFrom(sr => sr.User.UserName))
+                .ForMember(des => des.Email, src => src.MapFrom(sr => sr.User.Email))
+                .ForMember(des => des.PhoneNumber, src => src.MapFrom(sr => sr.User.PhoneNumber))
+                .ForMember(des => des.Address, src => src.MapFrom(sr => sr.User.Address))
+                ;
+
 
         }
     }

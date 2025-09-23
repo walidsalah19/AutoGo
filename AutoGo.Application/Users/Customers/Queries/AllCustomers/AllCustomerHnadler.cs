@@ -29,7 +29,6 @@ namespace AutoGo.Application.Users.Customers.Queries.AllCustomers
         {
             var query = appDbContext.Customers
                 .AsNoTracking()
-                
                 .Include(x => x.user)
                 .ProjectTo<CustomerDto>(mapper.ConfigurationProvider);
 

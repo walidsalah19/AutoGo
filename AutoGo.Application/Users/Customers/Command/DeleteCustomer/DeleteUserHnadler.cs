@@ -10,7 +10,7 @@ using AutoGo.Domain.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace AutoGo.Application.Users.DeleteCustomer
+namespace AutoGo.Application.Users.Customers.Command.DeleteCustomer
 {
     public class DeleteUserHnadler : IRequestHandler<DeleteUserCommand, Result<string>>
     {

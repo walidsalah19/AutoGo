@@ -1,7 +1,6 @@
 ﻿using AutoGo.Api.Extentions;
 using AutoGo.Application.Users.ActivationUsers.Activation;
 using AutoGo.Application.Users.ActivationUsers.SpecificPeriod;
-using AutoGo.Application.Users.DeleteCustomer;
 using AutoGo.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -34,12 +33,6 @@ namespace AutoGo.Api.Controllers
             var res = await mediator.Send(command);
             return this.HandleResult(res);
         }
-        [Authorize]
-        [HttpDelete("DeleteUser")]
-        public async Task<IActionResult> DeleteCustomer([FromQuery] string UserId)
-        {
-            var res = await mediator.Send(new DeleteUserCommand() { UserId = UserId });
-            return this.HandleResult(res);
-        }
+        
     }
 }

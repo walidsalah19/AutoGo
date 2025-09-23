@@ -19,8 +19,8 @@ namespace AutoGo.Domain.Models
 
         public int EstablishedYear { get; set; }         // سنة تأسيس المعرض
         public int TotalVehicles { get; set; }           // عدد العربيات الموجودة (ممكن تحديثه أو حسابه ديناميكياً)
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
         // Navigation
         public ICollection<Vehicle> Vehicles { get; set; }
