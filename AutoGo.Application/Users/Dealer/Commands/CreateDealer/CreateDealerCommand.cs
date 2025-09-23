@@ -22,8 +22,8 @@ namespace AutoGo.Application.Users.Dealer.Commands.CreateDealer
         public string TaxNumber { get; set; }
         public string LicenseNumber { get; set; }   // ترخيص مزاولة النشاط
         public int EstablishedYear { get; set; }         // سنة تأسيس المعرض
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
     }
 }

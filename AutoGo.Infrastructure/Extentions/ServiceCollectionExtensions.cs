@@ -27,6 +27,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoGo.Application.Abstractions.Cashing;
+using AutoGo.Infrastructure.Services.Cashing;
 
 namespace AutoGo.Infrastructure.Extentions
 {
@@ -80,6 +82,9 @@ namespace AutoGo.Infrastructure.Extentions
 
             //sending email
             services.AddScoped<ISendingEmailServices, SendingEmailServices>();
+
+            //cashing 
+            services.AddScoped<IDealerCashing, DealerCashing>();
             return services;
         }
     }
