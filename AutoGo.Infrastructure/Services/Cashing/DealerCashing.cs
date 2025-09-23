@@ -69,7 +69,7 @@ namespace AutoGo.Infrastructure.Services.Cashing
                 return new DealerDto
                 {
                     Id = id,
-                    UserName = entries.FirstOrDefault(x => x.Name == "FullName").Value,
+                    UserName = entries.FirstOrDefault(x => x.Name == "UserName").Value,
                     Address = entries.FirstOrDefault(x => x.Name == "Address").Value,
                     ShowroomName = entries.FirstOrDefault(x => x.Name == "ShowroomName").Value,
                     Email = entries.FirstOrDefault(x => x.Name == "Email").Value,

@@ -2,6 +2,7 @@
 using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Users.Dealer.Commands.CreateDealer;
 using AutoGo.Application.Users.Dealer.Queries.AllDealeres;
+using AutoGo.Application.Users.Dealer.Queries.GetNearsetDealers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,10 +28,19 @@ namespace AutoGo.Api.Controllers
 
         }
         
-        [HttpGet]
+        [HttpGet()]
         public async Task<IActionResult> AllDealers([FromQuery] PageParameters pageParameters)
         {
             var res = await _mediator.Send(new AllDealersQuery{PageParameters = pageParameters});
+            return this.HandleResult(res);
+
+        }
+
+        [HttpGet("NearestDealers")]
+        public async Task<IActionResult> NearestDealers([FromQuery] double longitude,double latitude,double radiusInKm)
+
+        {
+            var res = await _mediator.Send(new NearestDealersQuery { longitude = longitude,latitude = latitude,radiusInKm = radiusInKm});
             return this.HandleResult(res);
 
         }
