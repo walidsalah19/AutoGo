@@ -15,12 +15,12 @@ namespace AutoGo.Domain.Models
         public string customerId { get; set; }//customer
         public Customer customer { get; set; }
 
-        public Guid? RentalId { get; set; }
+        public string? RentalId { get; set; }
         public Rental Rental { get; set; }
 
-        public Guid? ServiceOrderId { get; set; }
+        public string? ServiceOrderId { get; set; }
         public ServiceOrder ServiceOrder { get; set; }
-        public Guid? paymentId { get; set; }
+        public string? paymentId { get; set; }
         public Payment Payment { get; set; }
         public DateTime IssueDate { get; set; } = DateTime.UtcNow;
         public DateTime DueDate { get; set; }

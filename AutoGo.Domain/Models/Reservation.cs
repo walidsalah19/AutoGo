@@ -15,7 +15,7 @@ namespace AutoGo.Domain.Models
         public string UserId { get; set; }   // صاحب السيارة
         public ApplicationUser User { get; set; }
 
-        public Guid VehicleId { get; set; }
+        public string VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
 
 

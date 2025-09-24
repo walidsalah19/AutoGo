@@ -9,7 +9,7 @@ namespace AutoGo.Domain.Models
 {
     public class Rental : BaseEntity
     {
-        public Guid VehicleId { get; set; }
+        public string VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
 
         public string customerId { get; set; }   // Customer

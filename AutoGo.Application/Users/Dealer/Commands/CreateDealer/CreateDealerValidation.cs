@@ -53,7 +53,7 @@ namespace AutoGo.Application.Users.Dealer.Commands.CreateDealer
 
             RuleFor(x => x.TaxNumber)
                 .NotEmpty().WithMessage("Tax number is required.")
-                .Matches(@"^\d{10,15}$").WithMessage("Tax number must be numeric.");
+                .Matches(@"^\d{10,15}$").WithMessage("Tax number must be numeric from 10 to 15 character.");
 
             RuleFor(x => x.LicenseNumber)
                 .NotEmpty().WithMessage("License number is required.")

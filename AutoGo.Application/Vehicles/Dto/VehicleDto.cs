@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoGo.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,8 @@ namespace AutoGo.Application.Vehicles.Dto
         public string Color { get; set; }
         public string VIN { get; set; }
         public long OdometerKm { get; set; }
+        public string Status { get; set; }
+
         public decimal DailyRate { get; set; }
         public string Category { get; set; }
         public double Latitude { get; set; }

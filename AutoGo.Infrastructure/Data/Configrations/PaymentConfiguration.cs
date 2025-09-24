@@ -26,7 +26,7 @@ namespace AutoGo.Infrastructure.Data.Configrations
             builder.Property(p => p.RentalId)
                 .IsRequired(false);
 
-            builder.Property(p => p.InvoiceId)
+            builder.Property(p => p.InvoiceNumber)
                 .IsRequired(false);
 
             builder.Property(p => p.Amount)
@@ -50,12 +50,12 @@ namespace AutoGo.Infrastructure.Data.Configrations
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-           
 
-            //builder.HasOne(p => p.Invoice)
-            //    .WithOne(i => i.Payment)
-            //    .HasForeignKey<Payment>(p=>p.InvoiceId)
-            //    .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(p => p.Invoice)
+                .WithOne(i => i.Payment)
+                .HasForeignKey<Payment>(p => p.InvoiceNumber)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
