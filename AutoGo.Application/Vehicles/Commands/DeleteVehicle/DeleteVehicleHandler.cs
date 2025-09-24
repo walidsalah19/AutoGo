@@ -36,7 +36,7 @@ namespace AutoGo.Application.Vehicles.Commands.DeleteVehicle
                 var vehicle = await _unitOfWork.Repository<Vehicle>().FindEntityById(request.VehicleId);
                 if (vehicle == null)
                     return Result<string>.Failure(new Error(message:"this vehicle not exist ",code:(int)ErrorCodes.NotFound));
-                //await _unitOfWork.Repository<Vehicle>().Remove(vehicle);
+                await _unitOfWork.Repository<Vehicle>().Remove(vehicle);
                 await _unitOfWork.CompleteAsync();
                 await _cacheService.DeleteVehicleAsync(request.VehicleId);
                 await _mediator.Publish(new VehicleDeletedEvent(VehicleId: vehicle.Id.ToString(), DealerId:vehicle.DealerId));
