@@ -139,5 +139,9 @@ namespace AutoGo.Infrastructure.Services.Cashing
 
             return null;
         }
+        public async Task UpdateFieldAsync(string id, string field, string value)
+        {
+            await _database.HashSetAsync($"vehicle:{id}", new HashEntry[] { new HashEntry(field, value) });
+        }
     }
 }
