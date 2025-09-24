@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoGo.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250911012247_initial")]
+    [Migration("20250924140434_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -49,10 +49,10 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -100,6 +100,29 @@ namespace AutoGo.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("AutoGo.Domain.Models.Customer", b =>
+                {
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.HasKey("userId");
+
+                    b.ToTable("Customers", (string)null);
+                });
+
             modelBuilder.Entity("AutoGo.Domain.Models.Dealer", b =>
                 {
                     b.Property<string>("UserId")
@@ -113,31 +136,22 @@ namespace AutoGo.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<int>("EstablishedYear")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
                     b.Property<string>("LicenseNumber")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<string>("ShowroomName")
                         .IsRequired()
@@ -156,7 +170,6 @@ namespace AutoGo.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("WebsiteUrl")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -174,14 +187,17 @@ namespace AutoGo.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceNumber"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -192,11 +208,11 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<decimal>("PaidAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("RentalId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("RentalId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("ServiceOrderId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ServiceOrderId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -209,33 +225,30 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("customerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("paymentId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("paymentId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InvoiceNumber");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("RentalId");
 
                     b.HasIndex("ServiceOrderId");
 
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("paymentId")
-                        .IsUnique()
-                        .HasFilter("[paymentId] IS NOT NULL");
+                    b.HasIndex("customerId");
 
                     b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("AutoGo.Domain.Models.MaintenanceRecord", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("decimal(18,2)");
@@ -262,11 +275,12 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("VehicleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("VehicleId1")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("VehicleId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("WorkshopId")
                         .HasColumnType("nvarchar(450)");
@@ -284,9 +298,8 @@ namespace AutoGo.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoGo.Domain.Models.Part", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -294,8 +307,8 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("MaintenanceRecordId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("MaintenanceRecordId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Manufacturer")
                         .IsRequired()
@@ -318,8 +331,8 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ServiceOrderId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ServiceOrderId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -335,9 +348,8 @@ namespace AutoGo.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoGo.Domain.Models.Payment", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -345,8 +357,8 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("InvoiceId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("InvoiceNumber")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -364,8 +376,8 @@ namespace AutoGo.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("RentalId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("RentalId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -376,6 +388,10 @@ namespace AutoGo.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("InvoiceNumber")
+                        .IsUnique()
+                        .HasFilter("[InvoiceNumber] IS NOT NULL");
+
                     b.HasIndex("RentalId");
 
                     b.HasIndex("UserId");
@@ -383,17 +399,41 @@ namespace AutoGo.Infrastructure.Migrations
                     b.ToTable("Payments", (string)null);
                 });
 
-            modelBuilder.Entity("AutoGo.Domain.Models.Rental", b =>
+            modelBuilder.Entity("AutoGo.Domain.Models.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("ActualReturnDate")
+                    b.Property<DateTime>("ExpireOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(225)
+                        .HasColumnType("nvarchar(225)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("AutoGo.Domain.Models.Rental", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ActualReturnDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -446,33 +486,28 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("VehicleId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("customerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.HasIndex("DealerId");
 
-                    b.HasIndex("UserId");
-
                     b.HasIndex("VehicleId");
+
+                    b.HasIndex("customerId");
 
                     b.ToTable("Rentals", (string)null);
                 });
 
             modelBuilder.Entity("AutoGo.Domain.Models.Reservation", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("AppointmentDate")
@@ -517,16 +552,15 @@ namespace AutoGo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("VehicleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("WorkshopId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
@@ -539,9 +573,8 @@ namespace AutoGo.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoGo.Domain.Models.ServiceOrder", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -555,8 +588,9 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<decimal>("PartsCost")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("ReservationId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ReservationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ServiceEndDate")
                         .HasColumnType("datetime2");
@@ -586,9 +620,8 @@ namespace AutoGo.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoGo.Domain.Models.Vehicle", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -603,11 +636,6 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CurrentLocation")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<decimal>("DailyRate")
                         .HasColumnType("decimal(18,2)");
 
@@ -618,10 +646,16 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
                     b.Property<string>("LicensePlate")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<string>("Make")
                         .IsRequired()
@@ -665,9 +699,8 @@ namespace AutoGo.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoGo.Domain.Models.VehicleImage", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -682,8 +715,9 @@ namespace AutoGo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("VehicleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -697,11 +731,6 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
@@ -712,26 +741,11 @@ namespace AutoGo.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
                     b.Property<int>("EstablishedYear")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Specialization")
                         .IsRequired()
@@ -748,34 +762,6 @@ namespace AutoGo.Infrastructure.Migrations
                     b.HasKey("OwnerId");
 
                     b.ToTable("Workshops", (string)null);
-                });
-
-            modelBuilder.Entity("ClinicalManagement.Domain.Models.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ExpireOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(225)
-                        .HasColumnType("nvarchar(225)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -911,6 +897,17 @@ namespace AutoGo.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AutoGo.Domain.Models.Customer", b =>
+                {
+                    b.HasOne("AutoGo.Domain.Models.ApplicationUser", "user")
+                        .WithOne()
+                        .HasForeignKey("AutoGo.Domain.Models.Customer", "userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("AutoGo.Domain.Models.Dealer", b =>
                 {
                     b.HasOne("AutoGo.Domain.Models.ApplicationUser", "User")
@@ -924,6 +921,10 @@ namespace AutoGo.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoGo.Domain.Models.Invoice", b =>
                 {
+                    b.HasOne("AutoGo.Domain.Models.ApplicationUser", null)
+                        .WithMany("Invoices")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("AutoGo.Domain.Models.Rental", "Rental")
                         .WithMany()
                         .HasForeignKey("RentalId")
@@ -934,23 +935,17 @@ namespace AutoGo.Infrastructure.Migrations
                         .HasForeignKey("ServiceOrderId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("AutoGo.Domain.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("AutoGo.Domain.Models.Customer", "customer")
+                        .WithMany("Invoices")
+                        .HasForeignKey("customerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("AutoGo.Domain.Models.Payment", "Payment")
-                        .WithOne("Invoice")
-                        .HasForeignKey("AutoGo.Domain.Models.Invoice", "paymentId");
-
-                    b.Navigation("Payment");
 
                     b.Navigation("Rental");
 
                     b.Navigation("ServiceOrder");
 
-                    b.Navigation("User");
+                    b.Navigation("customer");
                 });
 
             modelBuilder.Entity("AutoGo.Domain.Models.MaintenanceRecord", b =>
@@ -992,6 +987,11 @@ namespace AutoGo.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoGo.Domain.Models.Payment", b =>
                 {
+                    b.HasOne("AutoGo.Domain.Models.Invoice", "Invoice")
+                        .WithOne("Payment")
+                        .HasForeignKey("AutoGo.Domain.Models.Payment", "InvoiceNumber")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("AutoGo.Domain.Models.Rental", "Rental")
                         .WithMany()
                         .HasForeignKey("RentalId");
@@ -1002,26 +1002,29 @@ namespace AutoGo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Invoice");
+
                     b.Navigation("Rental");
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoGo.Domain.Models.RefreshToken", b =>
+                {
+                    b.HasOne("AutoGo.Domain.Models.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("AutoGo.Domain.Models.Rental", b =>
                 {
-                    b.HasOne("AutoGo.Domain.Models.ApplicationUser", null)
-                        .WithMany("Rentals")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("AutoGo.Domain.Models.Dealer", "Dealer")
                         .WithMany()
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AutoGo.Domain.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1031,19 +1034,21 @@ namespace AutoGo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Dealer");
+                    b.HasOne("AutoGo.Domain.Models.Customer", "Customer")
+                        .WithMany("Rentals")
+                        .HasForeignKey("customerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Customer");
+
+                    b.Navigation("Dealer");
 
                     b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("AutoGo.Domain.Models.Reservation", b =>
                 {
-                    b.HasOne("AutoGo.Domain.Models.ApplicationUser", null)
-                        .WithMany("Reservations")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("AutoGo.Domain.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -1113,17 +1118,6 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ClinicalManagement.Domain.Models.RefreshToken", b =>
-                {
-                    b.HasOne("AutoGo.Domain.Models.ApplicationUser", "user")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1177,9 +1171,14 @@ namespace AutoGo.Infrastructure.Migrations
 
             modelBuilder.Entity("AutoGo.Domain.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Rentals");
+                    b.Navigation("Invoices");
+                });
 
-                    b.Navigation("Reservations");
+            modelBuilder.Entity("AutoGo.Domain.Models.Customer", b =>
+                {
+                    b.Navigation("Invoices");
+
+                    b.Navigation("Rentals");
                 });
 
             modelBuilder.Entity("AutoGo.Domain.Models.Dealer", b =>
@@ -1187,15 +1186,15 @@ namespace AutoGo.Infrastructure.Migrations
                     b.Navigation("Vehicles");
                 });
 
+            modelBuilder.Entity("AutoGo.Domain.Models.Invoice", b =>
+                {
+                    b.Navigation("Payment")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AutoGo.Domain.Models.MaintenanceRecord", b =>
                 {
                     b.Navigation("Parts");
-                });
-
-            modelBuilder.Entity("AutoGo.Domain.Models.Payment", b =>
-                {
-                    b.Navigation("Invoice")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("AutoGo.Domain.Models.ServiceOrder", b =>

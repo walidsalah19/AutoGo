@@ -14,7 +14,7 @@ namespace AutoGo.Domain.Models
         public decimal Price { get; set; }
         public int Quantity { get; set; }
 
-        public Guid? MaintenanceRecordId { get; set; }
+        public string? MaintenanceRecordId { get; set; }
         public MaintenanceRecord MaintenanceRecord { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace AutoGo.Domain.Models
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-        public Guid? RentalId { get; set; }
+        public string? RentalId { get; set; }
         public Rental Rental { get; set; }
 
-        public Guid? InvoiceId { get; set; }
+        public int? InvoiceNumber { get; set; }
         public Invoice Invoice { get; set; }
 
         public decimal Amount { get; set; }

@@ -1,13 +1,16 @@
-﻿using System;
+﻿using AutoGo.Application.Abstractions.Cashing;
+using AutoGo.Application.Users.Dealer.Dtos;
+using AutoGo.Application.Vehicles.Dto;
+using AutoGo.Domain.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoGo.Application.Abstractions.Cashing;
-using AutoGo.Application.Vehicles.Dto;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
 
 namespace AutoGo.Infrastructure.Services.Cashing
 {
@@ -15,7 +18,8 @@ namespace AutoGo.Infrastructure.Services.Cashing
     {
         private readonly IDatabase _database;
         private readonly ILogger<VehicleCacheService> _logger;
-
+        private RedisKey GEO_KEY = "Vehicle:geo";
+        private RedisKey Set_Key= "vehicles:keys";
 
         public VehicleCacheService(IConfiguration configuration, ILogger<VehicleCacheService> logger)
         {
@@ -38,7 +42,8 @@ namespace AutoGo.Infrastructure.Services.Cashing
                     new HashEntry("Color", vehicle.Color),
                     new HashEntry("VIN", vehicle.VIN),
                     new HashEntry("OdometerKm", vehicle.OdometerKm),
-                    new HashEntry("DailyRate",(double) vehicle.DailyRate),
+                    new HashEntry("Status", vehicle.Status),
+                    new HashEntry("DailyRate", (double)vehicle.DailyRate),
                     new HashEntry("Category", vehicle.Category),
                     new HashEntry("Longitude", vehicle.Longitude),
                     new HashEntry("Latitude", vehicle.Latitude),
@@ -48,17 +53,91 @@ namespace AutoGo.Infrastructure.Services.Cashing
                 await _database.HashSetAsync(key, hashEntries);
 
                 // اختياري: خزّن Key في Set لتسهيل جلب كل العربيات
-                await _database.SetAddAsync("vehicles:keys", key);
+                await _database.SetAddAsync(Set_Key, key);
+                //إضافة ال Geo
+                await _database.GeoAddAsync(GEO_KEY, (double)vehicle.Longitude, (double)vehicle.Latitude, vehicle.Id);
+
             }
             catch (Exception e)
             {
-               _logger.LogError(e.Message);
+                _logger.LogError(e.Message);
             }
         }
 
-        public Task<List<VehicleDto>> GetAllVehiclesAsync()
+        public async Task DeleteVehicleAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var key = $"vehicle:{id}";
+                await _database.KeyDeleteAsync(key);
+                await _database.SetRemoveAsync(Set_Key, key);
+                await _database.GeoRemoveAsync(GEO_KEY, id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<List<VehicleDto>> GetAllVehiclesAsync()
+        {
+            var vehicles = new List<VehicleDto>();
+
+            // هات كل الـ keys من الـ Set
+            var keys = await _database.SetMembersAsync("vehicles:keys");
+
+            foreach (var key in keys)
+            {
+
+                var vehicle = await GetVehicleData(key.ToString());
+                vehicles.Add(vehicle);
+
+            }
+
+            return vehicles;
+        }
+
+        public async Task<IEnumerable<VehicleDto>> GetNearbyVehiclesAsync(double latitude, double longitude, double radiusInKm)
+        {
+            var nearby = await _database.GeoRadiusAsync(GEO_KEY,longitude,latitude,radiusInKm,GeoUnit.Kilometers);
+            var result = new List<VehicleDto>();
+            foreach (var n in nearby)
+            {
+                var vehicle = await GetVehicleData($"vehicle:{n.Member.ToString()}");
+                if (vehicle != null)
+                    result.Add(vehicle);
+            }
+            return result;
+        }
+
+        public async Task<VehicleDto> GetVehicleData(string key)
+        {
+            var hashEntries = await _database.HashGetAllAsync(key);
+
+            if (hashEntries.Length > 0)
+            {
+                var vehicle = new VehicleDto
+                {
+                    Id = key.ToString().Split(':')[1], // استخرج الـ ID من الـ Key
+                    LicensePlate = hashEntries.FirstOrDefault(x => x.Name == "LicensePlate").Value,
+                    Make = hashEntries.FirstOrDefault(x => x.Name == "Make").Value,
+                    Model = hashEntries.FirstOrDefault(x => x.Name == "Model").Value,
+                    Year = int.Parse(hashEntries.FirstOrDefault(x => x.Name == "Year").Value),
+                    Color = hashEntries.FirstOrDefault(x => x.Name == "Color").Value,
+                    VIN = hashEntries.FirstOrDefault(x => x.Name == "VIN").Value,
+                    OdometerKm = long.Parse(hashEntries.FirstOrDefault(x => x.Name == "OdometerKm").Value),
+                    Status = hashEntries.FirstOrDefault(x => x.Name == "Status").Value,
+                    DailyRate = decimal.Parse(hashEntries.FirstOrDefault(x => x.Name == "DailyRate").Value),
+                    Category = hashEntries.FirstOrDefault(x => x.Name == "Category").Value,
+                    Longitude = (double)hashEntries.FirstOrDefault(x => x.Name == "Longitude").Value,
+                    Latitude = (double)hashEntries.FirstOrDefault(x => x.Name == "Latitude").Value,
+                    DealerId = hashEntries.FirstOrDefault(x => x.Name == "DealerId").Value,
+                };
+                return vehicle;
+            }
+
+            return null;
         }
     }
 }

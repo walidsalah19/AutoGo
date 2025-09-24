@@ -39,7 +39,8 @@ namespace AutoGo.Application.Vehicles.Commands.AddVehicle
             {
                 var vehicle = _mapper.Map<Vehicle>(request);
                 var vehicleDto = _mapper.Map<VehicleDto>(request);
-                vehicleDto.Id = vehicle.Id.ToString();
+                vehicleDto.Id = vehicle.Id;
+                vehicleDto.Status = vehicle.Status.ToString();
                 await _unitOfWork.Repository<Vehicle>().AddAsync(vehicle);
                 await _cacheService.CacheVehicleAsync(vehicleDto);
                 await _mediator.Publish(new VehicleCreatedEvent

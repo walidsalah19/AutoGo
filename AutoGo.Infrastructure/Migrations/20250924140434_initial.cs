@@ -30,8 +30,8 @@ namespace AutoGo.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -159,20 +159,39 @@ namespace AutoGo.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    userId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "date", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.userId);
+                    table.ForeignKey(
+                        name: "FK_Customers_AspNetUsers_userId",
+                        column: x => x.userId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Dealers",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ShowroomName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    WebsiteUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    WebsiteUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     TaxNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LicenseNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     EstablishedYear = table.Column<int>(type: "int", nullable: false),
                     TotalVehicles = table.Column<int>(type: "int", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -213,10 +232,6 @@ namespace AutoGo.Infrastructure.Migrations
                 columns: table => new
                 {
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     WebsiteUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     EstablishedYear = table.Column<int>(type: "int", nullable: false),
@@ -241,7 +256,7 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "Vehicles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LicensePlate = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Make = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Model = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -252,7 +267,8 @@ namespace AutoGo.Infrastructure.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     DailyRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CurrentLocation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
                     DealerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -273,14 +289,14 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "MaintenanceRecords",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    VehicleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PerformedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     WorkshopId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    VehicleId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    VehicleId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -311,9 +327,9 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "Rentals",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    VehicleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    customerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DealerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -327,7 +343,6 @@ namespace AutoGo.Infrastructure.Migrations
                     DropoffLocation = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     IsPaid = table.Column<bool>(type: "bit", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -336,15 +351,10 @@ namespace AutoGo.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Rentals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rentals_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Rentals_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        name: "FK_Rentals_Customers_customerId",
+                        column: x => x.customerId,
+                        principalTable: "Customers",
+                        principalColumn: "userId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Rentals_Dealers_DealerId",
@@ -364,9 +374,9 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "VehicleImages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VehicleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -386,10 +396,10 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "WorkshopReservations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     WorkshopId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VehicleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ReservationNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     ReservationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -398,7 +408,6 @@ namespace AutoGo.Infrastructure.Migrations
                     ReservationStatus = table.Column<int>(type: "int", nullable: false),
                     EstimatedCost = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     IsPaid = table.Column<bool>(type: "bit", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -406,11 +415,6 @@ namespace AutoGo.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkshopReservations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkshopReservations_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_WorkshopReservations_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -432,43 +436,11 @@ namespace AutoGo.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RentalId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    InvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PaymentStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payments_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Payments_Rentals_RentalId",
-                        column: x => x.RentalId,
-                        principalTable: "Rentals",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ServiceOrders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReservationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReservationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ServiceStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ServiceEndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     WorkDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
@@ -496,16 +468,17 @@ namespace AutoGo.Infrastructure.Migrations
                 {
                     InvoiceNumber = table.Column<int>(type: "int", maxLength: 50, nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RentalId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ServiceOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    paymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    customerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RentalId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ServiceOrderId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    paymentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IssueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaidAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -514,16 +487,16 @@ namespace AutoGo.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Invoices", x => x.InvoiceNumber);
                     table.ForeignKey(
-                        name: "FK_Invoices_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Invoices_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Invoices_Payments_paymentId",
-                        column: x => x.paymentId,
-                        principalTable: "Payments",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Invoices_Customers_customerId",
+                        column: x => x.customerId,
+                        principalTable: "Customers",
+                        principalColumn: "userId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Invoices_Rentals_RentalId",
                         column: x => x.RentalId,
@@ -542,14 +515,14 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "Parts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PartName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PartNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Manufacturer = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    MaintenanceRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ServiceOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MaintenanceRecordId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ServiceOrderId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -569,6 +542,44 @@ namespace AutoGo.Infrastructure.Migrations
                         principalTable: "ServiceOrders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RentalId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    InvoiceNumber = table.Column<int>(type: "int", nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Payments_Invoices_InvoiceNumber",
+                        column: x => x.InvoiceNumber,
+                        principalTable: "Invoices",
+                        principalColumn: "InvoiceNumber",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Payments_Rentals_RentalId",
+                        column: x => x.RentalId,
+                        principalTable: "Rentals",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -611,11 +622,14 @@ namespace AutoGo.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_paymentId",
+                name: "IX_Invoices_ApplicationUserId",
                 table: "Invoices",
-                column: "paymentId",
-                unique: true,
-                filter: "[paymentId] IS NOT NULL");
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoices_customerId",
+                table: "Invoices",
+                column: "customerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invoices_RentalId",
@@ -626,11 +640,6 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "IX_Invoices_ServiceOrderId",
                 table: "Invoices",
                 column: "ServiceOrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Invoices_UserId",
-                table: "Invoices",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MaintenanceRecords_VehicleId",
@@ -658,6 +667,13 @@ namespace AutoGo.Infrastructure.Migrations
                 column: "ServiceOrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_InvoiceNumber",
+                table: "Payments",
+                column: "InvoiceNumber",
+                unique: true,
+                filter: "[InvoiceNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_RentalId",
                 table: "Payments",
                 column: "RentalId");
@@ -679,19 +695,14 @@ namespace AutoGo.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rentals_ApplicationUserId",
+                name: "IX_Rentals_customerId",
                 table: "Rentals",
-                column: "ApplicationUserId");
+                column: "customerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rentals_DealerId",
                 table: "Rentals",
                 column: "DealerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rentals_UserId",
-                table: "Rentals",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rentals_VehicleId",
@@ -724,11 +735,6 @@ namespace AutoGo.Infrastructure.Migrations
                 table: "Vehicles",
                 column: "VIN",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkshopReservations_ApplicationUserId",
-                table: "WorkshopReservations",
-                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkshopReservations_UserId",
@@ -765,10 +771,10 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Invoices");
+                name: "Parts");
 
             migrationBuilder.DropTable(
-                name: "Parts");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
@@ -780,16 +786,19 @@ namespace AutoGo.Infrastructure.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Payments");
+                name: "MaintenanceRecords");
 
             migrationBuilder.DropTable(
-                name: "MaintenanceRecords");
+                name: "Invoices");
+
+            migrationBuilder.DropTable(
+                name: "Rentals");
 
             migrationBuilder.DropTable(
                 name: "ServiceOrders");
 
             migrationBuilder.DropTable(
-                name: "Rentals");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "WorkshopReservations");
