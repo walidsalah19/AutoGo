@@ -59,8 +59,11 @@ namespace AutoGo.Infrastructure.Data.Configrations
             builder.Property(c => c.Category)
                 .HasMaxLength(50);
 
-            builder.Property(c => c.CurrentLocation)
-                .HasMaxLength(100);
+            builder.Property(c => c.Longitude)
+                .IsRequired();
+
+            builder.Property(c => c.Latitude)
+                .IsRequired();
 
             builder.HasOne(v => v.Dealer)
                    .WithMany(d => d.Vehicles)

@@ -1,4 +1,5 @@
 ﻿using AutoGo.Domain.Interfaces.Repo;
+using AutoGo.Domain.Models;
 using AutoGo.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,12 @@ namespace AutoGo.Infrastructure.Reposatories
         {
             await appDbContext.Set<T>().AddAsync(entity);
         }
+
+        public async Task<T> FindEntityById(string Id)
+        {
+            return await appDbContext.Set<T>().FindAsync(Id);
+        }
+
         public async Task Remove(T entity)
         {
             var user =  appDbContext.Set<T>().Remove(entity);

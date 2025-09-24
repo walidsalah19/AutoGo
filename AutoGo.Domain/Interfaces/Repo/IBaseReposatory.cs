@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoGo.Domain.Models;
 
 namespace AutoGo.Domain.Interfaces.Repo
 {
@@ -12,6 +13,7 @@ namespace AutoGo.Domain.Interfaces.Repo
         Task Remove(T entity);
 
         Task UpdateAsync(T entity);
+        Task<T> FindEntityById(string Id);
 
     }
 }
