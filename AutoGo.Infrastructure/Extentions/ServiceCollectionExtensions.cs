@@ -85,6 +85,7 @@ namespace AutoGo.Infrastructure.Extentions
 
             //cashing 
             services.AddScoped<IDealerCashing, DealerCashing>();
+            services.AddScoped<IVehicleCacheService, VehicleCacheService>();
             return services;
         }
     }

@@ -65,8 +65,8 @@ namespace AutoGo.Domain.Models
         /// <summary>
         /// Current location of the car.
         /// </summary>
-        public string CurrentLocation { get; set; }
-
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public string DealerId { get; set; }
         public Dealer Dealer { get; set; }
 

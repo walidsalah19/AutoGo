@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoGo.Application.Users.Dealer.Commands.CreateDealer;
 using AutoGo.Application.Users.Dealer.Dtos;
+using AutoGo.Application.Vehicles.Commands.AddVehicle;
+using AutoGo.Application.Vehicles.Dto;
 
 namespace AutoGo.Application.Mapping
 {
@@ -17,6 +19,7 @@ namespace AutoGo.Application.Mapping
     {
         public MappingProfile()
         {
+            //customer mapping
             CreateMap<CreateCustomerCommand, ApplicationUser>()
                 .ForMember(des => des.UserName, src => src.MapFrom(sr => sr.FullName))
                 .ForMember(des => des.Email, src => src.MapFrom(sr => sr.Email))
@@ -43,6 +46,8 @@ namespace AutoGo.Application.Mapping
                .ForMember(des => des.Country, src => src.MapFrom(sr => sr.Country))
                .ForMember(des => des.IsActive, src => src.MapFrom(sr => sr.user.IsActive));
 
+
+            //dealer mapping
             CreateMap<CreateDealerCommand, ApplicationUser>()
                 .ForMember(des => des.UserName, src => src.MapFrom(sr => sr.UserName))
                 .ForMember(des => des.Email, src => src.MapFrom(sr => sr.Email))
@@ -84,7 +89,9 @@ namespace AutoGo.Application.Mapping
                 .ForMember(des => des.PhoneNumber, src => src.MapFrom(sr => sr.User.PhoneNumber))
                 .ForMember(des => des.Address, src => src.MapFrom(sr => sr.User.Address))
                 ;
-
+            //vehicles mapping
+            CreateMap<AddVehicleCommand, Vehicle>();
+            CreateMap<AddVehicleCommand, VehicleDto>();
 
         }
     }
