@@ -1,17 +1,18 @@
-﻿using AutoGo.Application.Common.Result;
+﻿using AutoGo.Application.Abstractions.Cashing;
+using AutoGo.Application.Common.Pagination;
+using AutoGo.Application.Common.Result;
 using AutoGo.Application.Vehicles.Dto;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoGo.Application.Abstractions.Cashing;
-using Microsoft.Extensions.Logging;
 
 namespace AutoGo.Application.Vehicles.Queries.AllVehicles
 {
-    public class GetAllVehiclesHandler : IRequestHandler<GetAllVehicles, Result<List<VehicleDto>>>
+    public class GetAllVehiclesHandler : IRequestHandler<GetAllVehicles, Result<PaginationResult<VehicleDto>>>
     {
         private readonly IVehicleCacheService _cacheService;
         private readonly ILogger<GetAllVehiclesHandler> _logger;
@@ -22,13 +23,14 @@ namespace AutoGo.Application.Vehicles.Queries.AllVehicles
             _logger = logger;
         }
 
-        public async Task<Result<List<VehicleDto>>> Handle(GetAllVehicles request, CancellationToken cancellationToken)
+        public async Task<Result<PaginationResult<VehicleDto>>> Handle(GetAllVehicles request, CancellationToken cancellationToken)
         {
             try
             {
-                var vehicles = await _cacheService.GetAllVehiclesAsync();
-
-                return Result<List<VehicleDto>>.Success(vehicles);
+                var res = await _cacheService.GetAllVehiclesAsync();
+                var vehicles = await res.ToPagedResultAsync(request.PageParameters.PageNumber,
+                    request.PageParameters.Pagesize);
+                return Result< PaginationResult<VehicleDto>>.Success(vehicles);
             }
             catch (Exception e)
             {

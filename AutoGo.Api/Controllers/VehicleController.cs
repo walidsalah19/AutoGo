@@ -1,4 +1,5 @@
 ﻿using AutoGo.Api.Extentions;
+using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Vehicles.Commands.AddVehicle;
 using AutoGo.Application.Vehicles.Commands.DeleteVehicle;
 using AutoGo.Application.Vehicles.Queries.AllVehicles;
@@ -27,9 +28,9 @@ namespace AutoGo.Api.Controllers
             return this.HandleResult(res);
         }
         [HttpGet("AllVehicles")]
-        public async Task<IActionResult> AllVehicles()
+        public async Task<IActionResult> AllVehicles([FromQuery] PageParameters pageParameters)
         {
-            var res = await _mediator.Send(new GetAllVehicles());
+            var res = await _mediator.Send(new GetAllVehicles{PageParameters = pageParameters});
             return this.HandleResult(res);
         }
         [HttpGet("Nearby")]
