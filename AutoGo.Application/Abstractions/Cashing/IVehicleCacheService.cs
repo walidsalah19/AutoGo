@@ -20,5 +20,7 @@ namespace AutoGo.Application.Abstractions.Cashing
         public Task<IEnumerable<VehicleDto>> GetNearbyVehiclesAsync(double latitude, double longitude,
             double radiusInKm);
 
+        public Task UpdateFieldAsync(string id, string field, string value);
+
     }
 }

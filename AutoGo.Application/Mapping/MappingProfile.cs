@@ -92,6 +92,8 @@ namespace AutoGo.Application.Mapping
             //vehicles mapping
             CreateMap<AddVehicleCommand, Vehicle>();
             CreateMap<AddVehicleCommand, VehicleDto>();
+            CreateMap<Vehicle, VehicleDto>();
+
 
         }
     }

@@ -1,8 +1,10 @@
 ﻿using AutoGo.Api.Extentions;
 using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Vehicles.Commands.AddVehicle;
+using AutoGo.Application.Vehicles.Commands.ChangeStatus;
 using AutoGo.Application.Vehicles.Commands.DeleteVehicle;
 using AutoGo.Application.Vehicles.Queries.AllVehicles;
+using AutoGo.Application.Vehicles.Queries.AvaliableVehicles;
 using AutoGo.Application.Vehicles.Queries.NearbyVehicles;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +29,12 @@ namespace AutoGo.Api.Controllers
             var res = await _mediator.Send(vehicleCommand);
             return this.HandleResult(res);
         }
+        [HttpPost("ChangeStatus")]
+        public async Task<IActionResult> ChangeStatus([FromBody] ChangeStatusCommand command)
+        {
+            var res = await _mediator.Send(command);
+            return this.HandleResult(res);
+        }
         [HttpGet("AllVehicles")]
         public async Task<IActionResult> AllVehicles([FromQuery] PageParameters pageParameters)
         {
@@ -37,6 +45,12 @@ namespace AutoGo.Api.Controllers
         public async Task<IActionResult> NearbyVehicles([FromQuery] NearbyVehiclesQuery nearbyVehicles)
         {
             var res = await _mediator.Send(nearbyVehicles);
+            return this.HandleResult(res);
+        }
+        [HttpGet("Available")]
+        public async Task<IActionResult> AvailableVehicles([FromQuery] PageParameters pageParameters)
+        {
+            var res = await _mediator.Send(new AvaliableVehiclesQuery{PageParameters = pageParameters});
             return this.HandleResult(res);
         }
         [HttpDelete]
