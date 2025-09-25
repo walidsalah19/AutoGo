@@ -28,7 +28,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoGo.Application.Abstractions.Cashing;
+using AutoGo.Application.Abstractions.Cloudinary;
 using AutoGo.Infrastructure.Services.Cashing;
+using AutoGo.Infrastructure.Services.Cloudinary;
 
 namespace AutoGo.Infrastructure.Extentions
 {
@@ -86,6 +88,10 @@ namespace AutoGo.Infrastructure.Extentions
             //cashing 
             services.AddScoped<IDealerCashing, DealerCashing>();
             services.AddScoped<IVehicleCacheService, VehicleCacheService>();
+
+
+            //cloudinary
+            services.AddScoped<ICloudinaryServices, CloudinaryServices>();
             return services;
         }
     }

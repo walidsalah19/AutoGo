@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoGo.Application.Common.Result;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace AutoGo.Application.Vehicles.Commands.AddVehicle
 {
@@ -24,6 +25,7 @@ namespace AutoGo.Application.Vehicles.Commands.AddVehicle
         public string Category { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-       
+
+        public List<IFormFile> Images { get; set; }
     }
 }

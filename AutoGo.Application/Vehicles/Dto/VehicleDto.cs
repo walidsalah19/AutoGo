@@ -24,5 +24,7 @@ namespace AutoGo.Application.Vehicles.Dto
         public string Category { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+
+        public List<string> Images { get; set; }
     }
 }
