@@ -24,6 +24,11 @@ namespace AutoGo.Infrastructure.Reposatories
             await appDbContext.Set<T>().AddAsync(entity);
         }
 
+        public async Task AddRangeAsync(List<T> entity)
+        {
+            await appDbContext.Set<T>().AddRangeAsync(entity);
+        }
+
         public async Task<T> FindEntityById(string Id)
         {
             return await appDbContext.Set<T>().FindAsync(Id);

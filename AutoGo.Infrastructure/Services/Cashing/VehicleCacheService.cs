@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AutoGo.Infrastructure.Services.Cashing
@@ -32,6 +33,7 @@ namespace AutoGo.Infrastructure.Services.Cashing
             try
             {
                 var key = $"vehicle:{vehicle.Id}";
+                var images = JsonSerializer.Serialize(vehicle.Images);
                 var hashEntries = new HashEntry[]
                 {
                     new HashEntry("Id", vehicle.Id),
@@ -48,6 +50,8 @@ namespace AutoGo.Infrastructure.Services.Cashing
                     new HashEntry("Longitude", vehicle.Longitude),
                     new HashEntry("Latitude", vehicle.Latitude),
                     new HashEntry("DealerId", vehicle.DealerId),
+                    new HashEntry("Images", images),
+
                 };
 
                 await _database.HashSetAsync(key, hashEntries);
@@ -133,6 +137,8 @@ namespace AutoGo.Infrastructure.Services.Cashing
                     Longitude = (double)hashEntries.FirstOrDefault(x => x.Name == "Longitude").Value,
                     Latitude = (double)hashEntries.FirstOrDefault(x => x.Name == "Latitude").Value,
                     DealerId = hashEntries.FirstOrDefault(x => x.Name == "DealerId").Value,
+                    Images = JsonSerializer.Deserialize<List<string>>(
+                        hashEntries.FirstOrDefault(x => x.Name == "Images").Value!),
                 };
                 return vehicle;
             }

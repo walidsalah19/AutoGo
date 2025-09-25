@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoGo.Application.Abstractions.Cashing;
+using AutoGo.Application.Abstractions.Cloudinary;
 using AutoGo.Application.Common.Events.VehicleEvent.DeleteVehicle;
 using AutoGo.Application.Common.Result;
 using AutoGo.Domain.Enums;

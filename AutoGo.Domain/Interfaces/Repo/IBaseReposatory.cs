@@ -10,6 +10,8 @@ namespace AutoGo.Domain.Interfaces.Repo
     public interface IBaseReposatory<T> where T:class
     {
         Task AddAsync(T entity);
+        Task AddRangeAsync(List<T> entity);
+
         Task Remove(T entity);
 
         Task UpdateAsync(T entity);

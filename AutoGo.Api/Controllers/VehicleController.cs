@@ -24,12 +24,12 @@ namespace AutoGo.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddingVehicle([FromBody] AddVehicleCommand vehicleCommand)
+        public async Task<IActionResult> AddingVehicle([FromForm] AddVehicleCommand vehicleCommand)
         {
             var res = await _mediator.Send(vehicleCommand);
             return this.HandleResult(res);
         }
-        [HttpPost("ChangeStatus")]
+        [HttpPut("ChangeStatus")]
         public async Task<IActionResult> ChangeStatus([FromBody] ChangeStatusCommand command)
         {
             var res = await _mediator.Send(command);
