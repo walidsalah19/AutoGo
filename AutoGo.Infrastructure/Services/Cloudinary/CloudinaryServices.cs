@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace AutoGo.Infrastructure.Services.Cloudinary
 {
@@ -17,17 +18,16 @@ namespace AutoGo.Infrastructure.Services.Cloudinary
         private readonly ICloudinary _cloudinary;
         private readonly ILogger<CloudinaryServices> _logger;
         private string folder = "VehiclesImages";
-        public CloudinaryServices(IConfiguration configuration, ILogger<CloudinaryServices> logger)
+        public CloudinaryServices(IOptions<CloudinarySettings> options, ILogger<CloudinaryServices> logger)
         {
-            var settings = configuration.GetSection("Cloudinary").Get<CloudinarySettings>();
-            Account a = new Account
-            {
-                ApiKey= settings.ApiKey,
-                ApiSecret = settings.ApiSecret,
-                Cloud = settings.CloudName
-            };
-            _cloudinary =new CloudinaryDotNet.Cloudinary(a);
             _logger = logger;
+            var account = new Account(
+                options.Value.CloudName,
+                options.Value.ApiKey,
+                options.Value.ApiSecret
+              );
+            _cloudinary = new CloudinaryDotNet.Cloudinary(account);
+           
         }
 
         public async Task<List<string>> AddVehicleImagesAsync(List<IFormFile> images)

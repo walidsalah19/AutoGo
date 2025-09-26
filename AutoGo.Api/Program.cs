@@ -1,4 +1,4 @@
-
+﻿
 using AutoGo.Api.Extentions;
 using AutoGo.Api.Middelwares;
 using AutoGo.Application.Extentions;
@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
+using AutoGo.Infrastructure.Services.Cloudinary;
 
 namespace AutoGo.Api
 {
@@ -19,10 +20,20 @@ namespace AutoGo.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Load configuration from appsettings + env vars
+            builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables(); // لازم تبقى موجودة قبل الـ Configure
+
+            // ربط CloudinarySettings
+            builder.Services.Configure<CloudinarySettings>(
+                builder.Configuration.GetSection("CloudinarySettings"));
             // Add services to the container.
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddFluentEmail(builder.Configuration);
@@ -33,7 +44,12 @@ namespace AutoGo.Api
             builder.Services.AddApplicationServices();
             builder.Host.UseSerilog();
 
-        
+            Console.WriteLine("=== ENVIRONMENT VARIABLES TEST ===");
+            Console.WriteLine($"CloudName: {Environment.GetEnvironmentVariable("CLOUDINARY__CloudName")}");
+            Console.WriteLine($"ApiKey: {Environment.GetEnvironmentVariable("CLOUDINARY__ApiKey")}");
+            Console.WriteLine($"ApiSecret: {Environment.GetEnvironmentVariable("CLOUDINARY__ApiSecret")}");
+            Console.WriteLine("=================================");
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -26,7 +26,7 @@ namespace AutoGo.Application.Common.Events.VehicleEvent.DeleteVehicle
             var dealer = await _unitOfWork.Repository<Dealer>().FindEntityById(notification.DealerId);
             if (dealer != null)
             {
-                dealer.TotalVehicles -= 1;
+                dealer.TotalVehicles = dealer.TotalVehicles>0? dealer.TotalVehicles-1:dealer.TotalVehicles;
                 await _unitOfWork.CompleteAsync();
                 await _dealerCashing.UpdateFieldAsync(notification.DealerId, "TotalVehicles", dealer.TotalVehicles.ToString());
             }
