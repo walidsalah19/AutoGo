@@ -84,6 +84,7 @@ namespace AutoGo.Application.Mapping
 
 
             CreateMap<Dealer, DealerDto>()
+                .ForMember(des => des.Id, src => src.MapFrom(sr => sr.UserId))
                 .ForMember(des => des.UserName, src => src.MapFrom(sr => sr.User.UserName))
                 .ForMember(des => des.Email, src => src.MapFrom(sr => sr.User.Email))
                 .ForMember(des => des.PhoneNumber, src => src.MapFrom(sr => sr.User.PhoneNumber))
