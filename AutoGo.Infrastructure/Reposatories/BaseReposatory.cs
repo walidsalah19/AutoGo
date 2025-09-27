@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,9 +35,20 @@ namespace AutoGo.Infrastructure.Reposatories
             return await appDbContext.Set<T>().FindAsync(Id);
         }
 
+        public async Task<IQueryable<T>> GetRange(Expression<Func<T, bool>> ex)
+        {
+           var entities=   appDbContext.Set<T>().Where(ex);
+           return entities;
+        }
+
         public async Task Remove(T entity)
         {
-            var user =  appDbContext.Set<T>().Remove(entity);
+            appDbContext.Set<T>().Remove(entity);
+        }
+
+        public async Task RemoveRange(List<T> entities)
+        {
+            appDbContext.Set<T>().RemoveRange(entities);
         }
 
         public async Task UpdateAsync(T entity)

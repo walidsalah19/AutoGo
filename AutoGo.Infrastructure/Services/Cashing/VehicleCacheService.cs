@@ -33,28 +33,54 @@ namespace AutoGo.Infrastructure.Services.Cashing
             try
             {
                 var key = $"vehicle:{vehicle.Id}";
-                var images = JsonSerializer.Serialize(vehicle.Images);
-                var hashEntries = new HashEntry[]
+                //var images = JsonSerializer.Serialize(vehicle.Images);
+                //var hashEntries = new HashEntry[]
+                //{
+                //    new HashEntry("Id", vehicle.Id),
+                //    new HashEntry("LicensePlate", vehicle.LicensePlate),
+                //    new HashEntry("Make", vehicle.Make),
+                //    new HashEntry("Model", vehicle.Model),
+                //    new HashEntry("Year", vehicle.Year),
+                //    new HashEntry("Color", vehicle.Color),
+                //    new HashEntry("VIN", vehicle.VIN),
+                //    new HashEntry("OdometerKm", vehicle.OdometerKm),
+                //    new HashEntry("Status", vehicle.Status),
+                //    new HashEntry("DailyRate", (double)vehicle.DailyRate),
+                //    new HashEntry("Category", vehicle.Category),
+                //    new HashEntry("Longitude", vehicle.Longitude),
+                //    new HashEntry("Latitude", vehicle.Latitude),
+                //    new HashEntry("DealerId", vehicle.DealerId),
+                //    new HashEntry("Images", images),
+
+                //};
+
+                //await _database.HashSetAsync(key, hashEntries);
+                var hashEntries = new List<HashEntry>();
+
+                var props = typeof(Vehicle).GetProperties();
+                foreach (var prop in props)
                 {
-                    new HashEntry("Id", vehicle.Id),
-                    new HashEntry("LicensePlate", vehicle.LicensePlate),
-                    new HashEntry("Make", vehicle.Make),
-                    new HashEntry("Model", vehicle.Model),
-                    new HashEntry("Year", vehicle.Year),
-                    new HashEntry("Color", vehicle.Color),
-                    new HashEntry("VIN", vehicle.VIN),
-                    new HashEntry("OdometerKm", vehicle.OdometerKm),
-                    new HashEntry("Status", vehicle.Status),
-                    new HashEntry("DailyRate", (double)vehicle.DailyRate),
-                    new HashEntry("Category", vehicle.Category),
-                    new HashEntry("Longitude", vehicle.Longitude),
-                    new HashEntry("Latitude", vehicle.Latitude),
-                    new HashEntry("DealerId", vehicle.DealerId),
-                    new HashEntry("Images", images),
+                    var value = prop.GetValue(vehicle);
 
-                };
+                    if (value == null)
+                    {
+                        hashEntries.Add(new HashEntry(prop.Name, string.Empty));
+                        continue;
+                    }
 
-                await _database.HashSetAsync(key, hashEntries);
+                    if (value is List<string> list)
+                    {
+                        // serialize the list to JSON string
+                        var serializedList = JsonSerializer.Serialize(list);
+                        hashEntries.Add(new HashEntry(prop.Name, serializedList));
+                    }
+                    else
+                    {
+                        hashEntries.Add(new HashEntry(prop.Name, value.ToString()));
+                    }
+                }
+
+                await _database.HashSetAsync(key, hashEntries.ToArray());
 
                 // اختياري: خزّن Key في Set لتسهيل جلب كل العربيات
                 await _database.SetAddAsync(Set_Key, key);
@@ -148,6 +174,35 @@ namespace AutoGo.Infrastructure.Services.Cashing
         public async Task UpdateFieldAsync(string id, string field, string value)
         {
             await _database.HashSetAsync($"vehicle:{id}", new HashEntry[] { new HashEntry(field, value) });
+        }
+        public async Task UpdateAllFieldAsync(VehicleDto vehicle)
+        {
+            var hashEntries = new List<HashEntry>();
+
+            var props = typeof(Vehicle).GetProperties();
+            foreach (var prop in props)
+            {
+                var value = prop.GetValue(vehicle);
+
+                if (value == null)
+                {
+                    hashEntries.Add(new HashEntry(prop.Name, string.Empty));
+                    continue;
+                }
+
+                if (value is List<string> list)
+                {
+                    // serialize the list to JSON string
+                    var serializedList = JsonSerializer.Serialize(list);
+                    hashEntries.Add(new HashEntry(prop.Name, serializedList));
+                }
+                else
+                {
+                    hashEntries.Add(new HashEntry(prop.Name, value.ToString()));
+                }
+            }
+
+            await _database.HashSetAsync($"vehicle:{vehicle.Id}", hashEntries.ToArray());
         }
     }
 }
