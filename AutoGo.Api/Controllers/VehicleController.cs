@@ -3,6 +3,7 @@ using AutoGo.Application.Common.Pagination;
 using AutoGo.Application.Vehicles.Commands.AddVehicle;
 using AutoGo.Application.Vehicles.Commands.ChangeStatus;
 using AutoGo.Application.Vehicles.Commands.DeleteVehicle;
+using AutoGo.Application.Vehicles.Commands.UpdateVehicle;
 using AutoGo.Application.Vehicles.Queries.AllVehicles;
 using AutoGo.Application.Vehicles.Queries.AvaliableVehicles;
 using AutoGo.Application.Vehicles.Queries.NearbyVehicles;
@@ -27,6 +28,12 @@ namespace AutoGo.Api.Controllers
         public async Task<IActionResult> AddingVehicle([FromForm] AddVehicleCommand vehicleCommand)
         {
             var res = await _mediator.Send(vehicleCommand);
+            return this.HandleResult(res);
+        }
+        [HttpPut("UpdateVehicle")]
+        public async Task<IActionResult> UpdateVehicle([FromForm] UpdateVehicleCommand command)
+        {
+            var res = await _mediator.Send(command);
             return this.HandleResult(res);
         }
         [HttpPut("ChangeStatus")]

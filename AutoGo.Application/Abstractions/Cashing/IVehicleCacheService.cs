@@ -22,5 +22,7 @@ namespace AutoGo.Application.Abstractions.Cashing
 
         public Task UpdateFieldAsync(string id, string field, string value);
 
+        public Task UpdateAllFieldAsync(VehicleDto vehicle);
+
     }
 }
