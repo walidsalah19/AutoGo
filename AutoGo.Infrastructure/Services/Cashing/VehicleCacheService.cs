@@ -57,7 +57,7 @@ namespace AutoGo.Infrastructure.Services.Cashing
                 //await _database.HashSetAsync(key, hashEntries);
                 var hashEntries = new List<HashEntry>();
 
-                var props = typeof(Vehicle).GetProperties();
+                var props = typeof(VehicleDto).GetProperties();
                 foreach (var prop in props)
                 {
                     var value = prop.GetValue(vehicle);
@@ -179,7 +179,7 @@ namespace AutoGo.Infrastructure.Services.Cashing
         {
             var hashEntries = new List<HashEntry>();
 
-            var props = typeof(Vehicle).GetProperties();
+            var props = typeof(VehicleDto).GetProperties();
             foreach (var prop in props)
             {
                 var value = prop.GetValue(vehicle);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoGo.Domain.Enums;
 
 namespace AutoGo.Application.Vehicles.Commands.AddVehicle
 {
@@ -43,8 +44,8 @@ namespace AutoGo.Application.Vehicles.Commands.AddVehicle
                 .GreaterThan(0).WithMessage("Daily rate must be greater than 0.");
 
             RuleFor(v => v.Category)
-                .NotEmpty().WithMessage("Category is required.")
-                .MaximumLength(30).WithMessage("Category cannot exceed 30 characters.");
+                .IsInEnum()
+                .WithMessage("Category is required.");
 
             RuleFor(v => v.Longitude)
                 .NotEmpty().WithMessage("Longitude is required.");

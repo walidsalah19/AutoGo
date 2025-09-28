@@ -18,6 +18,8 @@ namespace AutoGo.Infrastructure.Data.Configrations
 
             // Primary Key
             builder.HasKey(c => c.Id);
+            builder.HasIndex(x => x.DealerId);
+            builder.HasIndex(x => x.Category);
 
             // Properties
             builder.Property(c => c.LicensePlate)

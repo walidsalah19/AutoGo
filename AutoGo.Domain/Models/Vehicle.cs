@@ -60,7 +60,7 @@ namespace AutoGo.Domain.Models
         /// <summary>
         /// Category of the car (e.g., Economy, SUV, Luxury).
         /// </summary>
-        public string Category { get; set; }
+        public VehicleCategory Category { get; set; } = VehicleCategory.Economy;
 
         /// <summary>
         /// Current location of the car.
