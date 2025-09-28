@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoGo.Domain.Enums;
 
 namespace AutoGo.Application.Vehicles.Commands.UpdateVehicle
 {
@@ -20,7 +21,7 @@ namespace AutoGo.Application.Vehicles.Commands.UpdateVehicle
         public string VIN { get; set; }
         public long OdometerKm { get; set; }
         public decimal DailyRate { get; set; }
-        public string Category { get; set; }
+        public VehicleCategory Category { get; set; }
         public List<IFormFile> Images { get; set; }
 
     }

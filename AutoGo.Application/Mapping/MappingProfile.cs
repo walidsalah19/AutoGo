@@ -93,7 +93,8 @@ namespace AutoGo.Application.Mapping
             //vehicles mapping
             CreateMap<AddVehicleCommand, Vehicle>();
             CreateMap<AddVehicleCommand, VehicleDto>();
-            CreateMap<Vehicle, VehicleDto>();
+            CreateMap<Vehicle, VehicleDto>()
+                .ForMember(des => des.Images, src => src.MapFrom(sr => sr.vehicleImages.Select(x=>x.Url)));
 
 
         }

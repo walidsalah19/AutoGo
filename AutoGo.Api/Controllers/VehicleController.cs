@@ -6,6 +6,7 @@ using AutoGo.Application.Vehicles.Commands.DeleteVehicle;
 using AutoGo.Application.Vehicles.Commands.UpdateVehicle;
 using AutoGo.Application.Vehicles.Queries.AllVehicles;
 using AutoGo.Application.Vehicles.Queries.AvaliableVehicles;
+using AutoGo.Application.Vehicles.Queries.DealerVehicle;
 using AutoGo.Application.Vehicles.Queries.NearbyVehicles;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -46,6 +47,12 @@ namespace AutoGo.Api.Controllers
         public async Task<IActionResult> AllVehicles([FromQuery] PageParameters pageParameters)
         {
             var res = await _mediator.Send(new GetAllVehicles{PageParameters = pageParameters});
+            return this.HandleResult(res);
+        }
+        [HttpGet("DealerId")]
+        public async Task<IActionResult> AllVehicles([FromQuery] PageParameters pageParameters,[FromQuery]string DealerId)
+        {
+            var res = await _mediator.Send(new DealerVehiclesQuery{ PageParameters = pageParameters ,DealerId = DealerId});
             return this.HandleResult(res);
         }
         [HttpGet("Nearby")]

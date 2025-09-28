@@ -22,7 +22,7 @@ namespace AutoGo.Application.Vehicles.Commands.AddVehicle
         public string VIN { get; set; }
         public long OdometerKm { get; set; }
         public decimal DailyRate { get; set; }
-        public string Category { get; set; }
+        public VehicleCategory Category { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 

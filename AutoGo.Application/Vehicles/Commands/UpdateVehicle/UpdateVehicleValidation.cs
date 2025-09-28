@@ -46,8 +46,8 @@ namespace AutoGo.Application.Vehicles.Commands.UpdateVehicle
                 .GreaterThan(0).WithMessage("Daily rate must be greater than 0.");
 
             RuleFor(v => v.Category)
-                .NotEmpty().WithMessage("Category is required.")
-                .MaximumLength(30).WithMessage("Category cannot exceed 30 characters.");
+                .IsInEnum()
+                .WithMessage("Category is required.");
         }
     }
 }
